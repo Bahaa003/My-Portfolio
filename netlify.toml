@@ -8,6 +8,7 @@
 [build.environment]
   NODE_VERSION = "22.12.0"
   SECRETS_SCAN_OMIT_PATHS = "src/content/projects/redacted-security-assessments.mdx"
+  SECRETS_SCAN_OMIT_KEYS = "PUBLIC_SITE_URL,GITHUB_CLIENT_ID,GITHUB_OAUTH_CALLBACK_URL,GITHUB_ADMIN_USERNAME,GITHUB_REPO_OWNER,GITHUB_REPO_NAME,GITHUB_BRANCH"
 
 [[headers]]
   for = "/*"
