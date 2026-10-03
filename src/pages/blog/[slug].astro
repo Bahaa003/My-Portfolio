@@ -26,6 +26,7 @@ const { minutes } = estimateReadingTime(entry.body ?? '');
   headings={headings}
   readingMinutes={minutes}
   confidentiality={entry.data.confidentiality}
+  coverUrl={entry.data.coverUrl}
 >
   <Content />
 </ArticleLayout>

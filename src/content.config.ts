@@ -25,6 +25,7 @@ const writeups = defineCollection({
       confidentiality,
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      coverUrl: z.string().optional(),
     }),
 });
 
@@ -51,6 +52,7 @@ const projects = defineCollection({
       confidentiality,
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      coverUrl: z.string().optional(),
     }),
 });
 

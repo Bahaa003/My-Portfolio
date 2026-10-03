@@ -32,6 +32,7 @@ const allWriteups = await getPublicWriteups();
   readingMinutes={minutes}
   confidentiality={entry.data.confidentiality}
   author={entry.data.author}
+  coverUrl={entry.data.coverUrl}
 >
   <Content components={{ HttpBlock, NoteCallout, WarningCallout }} />
   <RelatedWriteups current={entry} all={allWriteups} />
