@@ -8,5 +8,4 @@ export interface YoutubeVideo {
 
 export const YOUTUBE_VIDEOS: YoutubeVideo[] = [];
 
-// Add the real channel URL when the channel is created.
-export const YOUTUBE_CHANNEL_URL = '';
+export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@bahaa_aldeen_nawlo';

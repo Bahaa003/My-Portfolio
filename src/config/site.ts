@@ -27,6 +27,7 @@ export const SOCIAL_LINKS = [
   { label: 'Email', href: 'mailto:bahaa.aldeen.nawlo@gmail.com', icon: 'mail' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/bahaa-aldeen-nawlo-65618838a', icon: 'linkedin' },
   { label: 'GitHub', href: 'https://github.com/Bahaa003', icon: 'github' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@bahaa_aldeen_nawlo', icon: 'youtube' },
 ] as const;
 
 export const SECURITY_CONTACT_EMAIL = 'bahaa.aldeen.nawlo@gmail.com';
