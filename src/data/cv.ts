@@ -3,13 +3,13 @@
 
 export const CV = {
   summary:
-    'Computer Science graduate and Junior Penetration Tester with hands-on experience in web application, API, and security configuration assessments. Experienced in testing authentication and authorization mechanisms, analyzing application behavior, identifying and validating security vulnerabilities, and producing technical security reports.',
+    'Computer Science graduate and Junior Penetration Tester with hands-on experience in web application, API, and security configuration assessments. Experienced in testing authentication and authorization mechanisms, analyzing application behavior, identifying and validating security vulnerabilities, and producing technical security reports. Completed extensive practical training through PortSwigger Web Security Academy and TryHackMe, with a current focus on web application and offensive security.',
 
   experience: [
     {
       role: 'Junior Penetration Tester',
       org: 'Independent / Contract Security Assessment Work',
-      period: '2026 – Present',
+      period: 'May 2026 – Present',
       summary:
         'Hands-on security assessment work covering web applications, APIs, and externally exposed assets.',
       highlights: [
@@ -41,23 +41,15 @@ export const CV = {
 
   skills: {
     testing: [
-      'Web Application Penetration Testing',
-      'API Security Testing',
-      'Authentication & Authorization Testing',
-      'JWT Security Testing',
       'OWASP Top 10',
       'SSRF',
-      'SQL Injection',
-      'Cross-Site Scripting (XSS)',
+      'SQLi',
+      'XSS',
       'CSRF',
       'Path Traversal',
       'Access Control Flaws',
-      'Clickjacking',
-      'Security Misconfiguration Review',
-      'HTTP / Security Header Analysis',
-      'Information Disclosure Testing',
     ],
-    programming: ['Python', 'Dart / Flutter', 'Bash Scripting', 'n8n'],
+    programming: ['Python (Exploit Development & Automation)', 'Dart / Flutter', 'Bash Scripting', 'n8n'],
     web: ['RESTful APIs', 'GraphQL', 'HTML / CSS', 'Django'],
     systems: ['Linux (Fedora / Debian)', 'Windows'],
     tools: ['Burp Suite', 'Nmap', 'Metasploit', 'Netcat', 'Dirbuster / ffuf', 'Wireshark', 'curl', 'dig', 'httpx'],
@@ -68,10 +60,18 @@ export const CV = {
     {
       name: 'Junior Penetration Tester (JPT)',
       issuer: 'TryHackMe',
+      details: [
+        'Hands-on certification focused on the core technical skills required for security assessments.',
+        'Key skills: Web Application Hacking (Burp Suite), Network Security, Privilege Escalation (Linux/Windows), and Vulnerability Research.',
+        'Proficient in using industry-standard tools like Metasploit for exploitation and reconnaissance.',
+      ],
     },
     {
       name: 'Linux Privilege Escalation for Beginners',
       issuer: 'TCM Security',
+      details: [
+        'Hands-on training on identifying Linux system misconfigurations and exploiting vulnerabilities to achieve root privileges.',
+      ],
     },
   ],
 

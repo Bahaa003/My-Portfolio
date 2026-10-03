@@ -32,18 +32,21 @@ import { SOCIAL_LINKS } from '../../config/site';
       </nav>
     </div>
 
-    <aside class="hero-facts" aria-label="Profile highlights">
-      <div class="fact">
-        <strong>6</strong>
-        <span>security reports authored</span>
-      </div>
-      <div class="fact">
-        <strong>2</strong>
-        <span>additional reports reviewed</span>
-      </div>
-      <div class="fact">
-        <strong>2026</strong>
-        <span>Computer Science graduate</span>
+    <aside class="hero-aside" aria-label="Profile highlights">
+      <img class="hero-photo" src="/images/profile/Photo.jpeg" alt="Bahaa Aldeen Nawlo" />
+      <div class="hero-facts">
+        <div class="fact">
+          <strong>6</strong>
+          <span>security reports authored</span>
+        </div>
+        <div class="fact">
+          <strong>2</strong>
+          <span>additional reports reviewed</span>
+        </div>
+        <div class="fact">
+          <strong>2026</strong>
+          <span>Computer Science graduate</span>
+        </div>
       </div>
     </aside>
   </div>
@@ -51,15 +54,15 @@ import { SOCIAL_LINKS } from '../../config/site';
 
 <style>
   .hero {
-    padding-top: var(--space-7);
-    padding-bottom: var(--space-6);
+    padding-top: clamp(4rem, 10vw, 7rem);
+    padding-bottom: clamp(3rem, 8vw, 5rem);
   }
 
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
     gap: var(--space-6);
-    align-items: end;
+    align-items: center;
   }
 
   .hero-eyebrow {
@@ -68,9 +71,10 @@ import { SOCIAL_LINKS } from '../../config/site';
   }
 
   .hero-name {
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    max-width: 9ch;
-    letter-spacing: -0.045em;
+    font-size: clamp(2.1rem, 5vw, 4.5rem);
+    white-space: nowrap;
+    max-width: none;
+    letter-spacing: -0.055em;
   }
 
   .hero-focus {
@@ -106,7 +110,24 @@ import { SOCIAL_LINKS } from '../../config/site';
     color: var(--color-accent-strong);
   }
 
+  .hero-aside {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+  }
+
+  .hero-photo {
+    width: clamp(150px, 18vw, 220px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center 15%;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 0 0 8px rgba(197, 201, 207, 0.08), 0 16px 40px rgba(0, 0, 0, 0.2);
+  }
+
   .hero-facts {
+    width: 100%;
     border-top: var(--border-width) solid var(--color-border);
   }
 
@@ -132,11 +153,22 @@ import { SOCIAL_LINKS } from '../../config/site';
   @media (max-width: 800px) {
     .hero-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-5);
+      gap: var(--space-4);
+      align-items: start;
     }
 
     .hero-name {
-      max-width: 12ch;
+      max-width: none;
+    }
+
+    .hero-aside {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      justify-items: start;
+    }
+
+    .hero-photo {
+      width: 150px;
     }
   }
 
@@ -146,7 +178,16 @@ import { SOCIAL_LINKS } from '../../config/site';
     }
 
     .hero-name {
-      font-size: var(--text-3xl);
+      font-size: clamp(1.75rem, 8vw, 2.8rem);
+    }
+
+    .hero-aside {
+      grid-template-columns: 1fr;
+      justify-items: stretch;
+    }
+
+    .hero-photo {
+      justify-self: center;
     }
   }
 </style>

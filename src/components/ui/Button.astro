@@ -21,6 +21,7 @@ const { href, variant = 'primary' } = Astro.props;
     font-weight: 500;
     border-radius: var(--radius-sm);
     border: var(--border-width) solid transparent;
+    box-shadow: 0 8px 18px rgba(8, 11, 18, 0.12);
     transition:
       background-color var(--transition-fast),
       border-color var(--transition-fast),
@@ -29,7 +30,7 @@ const { href, variant = 'primary' } = Astro.props;
 
   .btn-primary {
     background: var(--color-accent);
-    color: #0b0d10;
+    color: #111827;
   }
 
   .btn-primary:hover {
@@ -40,6 +41,7 @@ const { href, variant = 'primary' } = Astro.props;
     background: transparent;
     border-color: var(--color-border-strong);
     color: var(--color-text-primary);
+    border-color: var(--color-accent-border);
   }
 
   .btn-secondary:hover {

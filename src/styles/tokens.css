@@ -4,18 +4,18 @@
 */
 :root {
   /* Color: dark-first, single restrained accent */
-  --color-bg: #0b0d10;
-  --color-surface: #11151a;
-  --color-surface-raised: #151a20;
-  --color-text-primary: #f2f4f7;
-  --color-text-secondary: #9ca3af;
-  --color-border: #252a31;
-  --color-border-strong: #333a44;
+  --color-bg: #191b1f;
+  --color-surface: #24272c;
+  --color-surface-raised: #2d3137;
+  --color-text-primary: #f0f1f3;
+  --color-text-secondary: #b2b5bb;
+  --color-border: #3b3f46;
+  --color-border-strong: #777d86;
 
-  --color-accent: #5b8cff;
-  --color-accent-strong: #7ea2ff;
-  --color-accent-muted: rgba(91, 140, 255, 0.12);
-  --color-accent-border: rgba(91, 140, 255, 0.35);
+  --color-accent: #c5c9cf;
+  --color-accent-strong: #f3f4f5;
+  --color-accent-muted: rgba(197, 201, 207, 0.14);
+  --color-accent-border: rgba(197, 201, 207, 0.55);
 
   --color-warning: #e0a458;
   --color-warning-muted: rgba(224, 164, 88, 0.12);
@@ -56,8 +56,8 @@
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
   /* Misc */
-  --radius-sm: 3px;
-  --radius-md: 6px;
+  --radius-sm: 999px;
+  --radius-md: 10px;
   --border-width: 1px;
   --transition-fast: 120ms ease;
   --transition-base: 200ms ease;

@@ -23,12 +23,13 @@ const { title, href, linkLabel = 'View all' } = Astro.props;
   }
 
   .section-heading h2 {
-    font-size: var(--text-xl);
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    letter-spacing: -0.03em;
   }
 
   .section-heading-link {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: var(--color-accent-strong);
     white-space: nowrap;
     transition: color var(--transition-fast);
   }

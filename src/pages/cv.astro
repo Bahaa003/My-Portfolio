@@ -64,7 +64,10 @@ const hasDownload = Boolean(CV.pdfPath);
     <h2>Certifications</h2>
     <ul class="cv-list">
       {CV.certifications.map((c) => (
-        <li>{c.name} — <span class="text-secondary">{c.issuer}</span></li>
+        <li>
+          {c.name} — <span class="text-secondary">{c.issuer}</span>
+          {c.details && <ul class="cv-list cv-detail-list">{c.details.map((detail) => <li>{detail}</li>)}</ul>}
+        </li>
       ))}
     </ul>
   </section>

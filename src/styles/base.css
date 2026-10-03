@@ -25,13 +25,17 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  background: linear-gradient(180deg, #363a40 0%, #24272c 18rem, var(--color-bg) 42rem);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+main {
+  overflow: hidden;
 }
 
 img,
