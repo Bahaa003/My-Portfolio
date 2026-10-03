@@ -19,7 +19,7 @@ const sorted = [...YOUTUBE_VIDEOS].sort((a, b) => new Date(b.date).valueOf() - n
     </div>
 
     {sorted.length === 0 ? (
-      <p class="text-secondary">CONTENT_PLACEHOLDER — no videos published yet.</p>
+      <p class="text-secondary">No videos published yet. Visit the channel for the latest uploads.</p>
     ) : (
       <div class="grid-auto">
         {sorted.map((video) => (
