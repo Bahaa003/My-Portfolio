@@ -1,0 +1,7 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profile photo placeholder">
+  <rect width="320" height="320" fill="#11151A"/>
+  <rect x="1" y="1" width="318" height="318" fill="none" stroke="#252A31" stroke-width="2"/>
+  <circle cx="160" cy="128" r="52" fill="#1a1f26" stroke="#333a44" stroke-width="2"/>
+  <path d="M60 300c0-58 45-104 100-104s100 46 100 104" fill="#1a1f26" stroke="#333a44" stroke-width="2"/>
+  <text x="160" y="240" font-family="monospace" font-size="13" fill="#9CA3AF" text-anchor="middle">PHOTO TODO</text>
+</svg>

@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getPublicBlogPosts, entrySlug } from '../../lib/collections';
+import { estimateReadingTime } from '../../lib/readingTime';
+
+export async function getStaticPaths() {
+  const posts = await getPublicBlogPosts();
+  return posts.map((entry) => ({
+    params: { slug: entrySlug(entry) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { minutes } = estimateReadingTime(entry.body ?? '');
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  date={entry.data.date}
+  updatedDate={entry.data.updatedDate}
+  tags={entry.data.tags}
+  headings={headings}
+  readingMinutes={minutes}
+  confidentiality={entry.data.confidentiality}
+>
+  <Content />
+</ArticleLayout>

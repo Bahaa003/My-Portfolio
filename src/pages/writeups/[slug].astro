@@ -1,0 +1,38 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import RelatedWriteups from '../../components/writeups/RelatedWriteups.astro';
+import HttpBlock from '../../components/writeups/HttpBlock.astro';
+import NoteCallout from '../../components/writeups/NoteCallout.astro';
+import WarningCallout from '../../components/writeups/WarningCallout.astro';
+import { getPublicWriteups, entrySlug } from '../../lib/collections';
+import { estimateReadingTime } from '../../lib/readingTime';
+
+export async function getStaticPaths() {
+  const writeups = await getPublicWriteups();
+  return writeups.map((entry) => ({
+    params: { slug: entrySlug(entry) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { minutes } = estimateReadingTime(entry.body ?? '');
+const allWriteups = await getPublicWriteups();
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  date={entry.data.date}
+  updatedDate={entry.data.updatedDate}
+  tags={entry.data.tags}
+  headings={headings}
+  readingMinutes={minutes}
+  confidentiality={entry.data.confidentiality}
+  author={entry.data.author}
+>
+  <Content components={{ HttpBlock, NoteCallout, WarningCallout }} />
+  <RelatedWriteups current={entry} all={allWriteups} />
+</ArticleLayout>

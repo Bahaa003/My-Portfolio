@@ -1,0 +1,38 @@
+---
+import Nav from './Nav.astro';
+import { SITE } from '../../config/site';
+---
+
+<header class="site-header">
+  <div class="page site-header-inner">
+    <a href="/" class="site-brand">{SITE.shortTitle}</a>
+    <Nav />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(11, 13, 16, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    position: relative;
+  }
+
+  .site-brand {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+</style>

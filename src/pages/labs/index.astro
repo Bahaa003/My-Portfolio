@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LabCard from '../../components/labs/LabCard.astro';
+import { getPublicLabs } from '../../lib/collections';
+
+const labs = await getPublicLabs();
+
+const platforms = [...new Set(labs.map((l) => l.data.platform))];
+---
+
+<BaseLayout
+  title="Labs"
+  description="Security training labs completed by Bahaa Aldeen Nawlo across PortSwigger, TryHackMe, and other platforms."
+>
+  <section class="page section">
+    <div class="index-header">
+      <p class="mono text-secondary">Labs</p>
+      <h1>Security training labs</h1>
+      {platforms.length > 0 && (
+        <p class="text-secondary">Platforms: {platforms.join(', ')}</p>
+      )}
+    </div>
+
+    {labs.length === 0 ? (
+      <p class="text-secondary">CONTENT_PLACEHOLDER — no labs logged yet.</p>
+    ) : (
+      <div class="grid-auto">
+        {labs.map((entry) => <LabCard entry={entry} />)}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .index-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem var(--space-1);
+  }
+</style>

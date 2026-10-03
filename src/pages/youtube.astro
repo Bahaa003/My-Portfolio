@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/ui/Card.astro';
+import { YOUTUBE_VIDEOS, YOUTUBE_CHANNEL_URL } from '../data/youtube';
+
+const sorted = [...YOUTUBE_VIDEOS].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+---
+
+<BaseLayout title="YouTube" description="Videos by Bahaa Aldeen Nawlo.">
+  <section class="page section">
+    <div class="index-header">
+      <p class="mono text-secondary">YouTube</p>
+      <h1>Videos</h1>
+      {YOUTUBE_CHANNEL_URL && (
+        <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" class="channel-link">
+          View channel →
+        </a>
+      )}
+    </div>
+
+    {sorted.length === 0 ? (
+      <p class="text-secondary">CONTENT_PLACEHOLDER — no videos published yet.</p>
+    ) : (
+      <div class="grid-auto">
+        {sorted.map((video) => (
+          <Card href={video.url}>
+            <article>
+              {video.thumbnail && <img src={video.thumbnail} alt="" class="video-thumb" />}
+              <h2>{video.title}</h2>
+              <p class="text-secondary">{video.description}</p>
+            </article>
+          </Card>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .index-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem var(--space-2);
+  }
+
+  .channel-link {
+    font-size: var(--text-sm);
+    color: var(--color-accent-strong);
+  }
+
+  .video-thumb {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: var(--space-2);
+  }
+
+  h2 {
+    font-size: var(--text-base);
+  }
+</style>

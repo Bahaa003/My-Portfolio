@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+import Tag from '../../components/ui/Tag.astro';
+import { getPublicBlogPosts, entrySlug } from '../../lib/collections';
+
+const posts = await getPublicBlogPosts();
+---
+
+<BaseLayout title="Blog" description="Notes and commentary from Bahaa Aldeen Nawlo.">
+  <section class="page section">
+    <div class="index-header">
+      <p class="mono text-secondary">Blog</p>
+      <h1>Blog</h1>
+    </div>
+
+    {posts.length === 0 ? (
+      <p class="text-secondary">CONTENT_PLACEHOLDER — no posts published yet.</p>
+    ) : (
+      <div class="stack">
+        {posts.map((entry) => {
+          const dateStr = entry.data.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+          return (
+            <Card href={`/blog/${entrySlug(entry)}`}>
+              <h2>{entry.data.title}</h2>
+              <p class="text-secondary">{entry.data.description}</p>
+              <p class="mono text-secondary post-meta">{dateStr}</p>
+              {entry.data.tags.length > 0 && (
+                <div class="post-tags">
+                  {entry.data.tags.map((tag) => <Tag>{tag}</Tag>)}
+                </div>
+              )}
+            </Card>
+          );
+        })}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .index-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem 0;
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .post-meta {
+    font-size: var(--text-xs);
+    margin-top: var(--space-1);
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+  }
+</style>

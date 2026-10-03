@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { getPublicProjects } from '../lib/collections';
+
+const projects = await getPublicProjects();
+
+const categories = [
+  { key: 'professional-security-work', label: 'Professional Security Work' },
+  { key: 'security-investigation', label: 'Security Investigations' },
+  { key: 'personal-project', label: 'Personal Projects' },
+  { key: 'research', label: 'Research' },
+] as const;
+
+const grouped = categories.map((c) => ({
+  ...c,
+  entries: projects.filter((p) => p.data.category === c.key),
+}));
+---
+
+<BaseLayout
+  title="Work"
+  description="Professional security work, investigations, personal projects, and research by Bahaa Aldeen Nawlo."
+>
+  <section class="page section">
+    <div class="work-header">
+      <p class="mono text-secondary">Work</p>
+      <h1>Portfolio</h1>
+      <p class="text-secondary prose-width">
+        Professional security assessments, independent investigations, personal projects, and research.
+        Client work is summarized without confidential details.
+      </p>
+    </div>
+
+    {projects.length === 0 && (
+      <p class="text-secondary">CONTENT_PLACEHOLDER — no published work yet. Entries will appear here as they're added.</p>
+    )}
+
+    {grouped.map((group) =>
+      group.entries.length > 0 ? (
+        <div class="work-group">
+          <h2>{group.label}</h2>
+          <div class="grid-auto">
+            {group.entries.map((entry) => <ProjectCard entry={entry} />)}
+          </div>
+        </div>
+      ) : null
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .work-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .work-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem var(--space-2);
+  }
+
+  .work-group {
+    margin-bottom: var(--space-5);
+  }
+
+  .work-group h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-1);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+</style>

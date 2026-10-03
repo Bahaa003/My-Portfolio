@@ -1,0 +1,40 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import { YOUTUBE_VIDEOS } from '../../data/youtube';
+
+const videos = YOUTUBE_VIDEOS.slice(0, 3);
+---
+
+{videos.length > 0 && (
+  <section class="section-tight">
+    <div class="page">
+      <SectionHeading title="Latest videos" href="/youtube" />
+      <div class="grid-auto">
+        {videos.map((video) => (
+          <Card href={video.url}>
+            <article class="video-card">
+              {video.thumbnail && <img src={video.thumbnail} alt="" class="video-thumb" />}
+              <h3>{video.title}</h3>
+              <p class="text-secondary">{video.description}</p>
+            </article>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .video-card h3 {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .video-thumb {
+    border-radius: var(--radius-sm);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: var(--space-2);
+  }
+</style>

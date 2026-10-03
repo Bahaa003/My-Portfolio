@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PROFILE } from '../data/profile';
+---
+
+<BaseLayout title="About" description="Background and training of Bahaa Aldeen Nawlo, junior penetration tester.">
+  <section class="page section">
+    <div class="prose-width stack">
+      <div>
+        <p class="mono text-secondary">About</p>
+        <h1>{PROFILE.name}</h1>
+        <p class="text-secondary">{PROFILE.title}</p>
+      </div>
+
+      {PROFILE.longIntro.map((paragraph) => <p class="about-paragraph">{paragraph}</p>)}
+
+      <div class="about-section">
+        <h2>Languages</h2>
+        <ul class="lang-list">
+          {PROFILE.languages.map((l) => (
+            <li>
+              <span>{l.language}</span>
+              <span class="text-secondary mono">{l.level}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-size: var(--text-3xl);
+    margin-top: 0.25rem;
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .about-section {
+    margin-top: var(--space-4);
+  }
+
+  .about-paragraph {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+  }
+
+  .lang-list li {
+    display: flex;
+    justify-content: space-between;
+    max-width: 24rem;
+    padding-block: var(--space-1);
+    border-bottom: var(--border-width) solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+</style>

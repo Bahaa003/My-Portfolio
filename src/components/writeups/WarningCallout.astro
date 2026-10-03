@@ -1,0 +1,28 @@
+---
+---
+
+<div class="callout callout-warning" role="note">
+  <p class="callout-label mono">Warning</p>
+  <div class="callout-body"><slot /></div>
+</div>
+
+<style>
+  .callout-warning {
+    border-left: 3px solid var(--color-warning);
+    background: var(--color-warning-muted);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-2);
+    margin-block: var(--space-3);
+  }
+
+  .callout-warning .callout-label {
+    font-size: var(--text-xs);
+    color: var(--color-warning);
+    margin-bottom: 0.35rem;
+  }
+
+  .callout-warning .callout-body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>

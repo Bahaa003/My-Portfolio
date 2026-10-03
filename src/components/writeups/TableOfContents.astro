@@ -1,0 +1,60 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+// Only show top two heading levels to keep the TOC readable.
+const filtered = headings.filter((h) => h.depth <= 3);
+---
+
+{filtered.length > 0 && (
+  <nav class="toc" aria-label="Table of contents">
+    <p class="toc-label mono text-secondary">On this page</p>
+    <ul>
+      {filtered.map((h) => (
+        <li class={`toc-depth-${h.depth}`}>
+          <a href={`#${h.slug}`}>{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc {
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .toc-label {
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-1);
+  }
+
+  .toc li {
+    margin-block: 0.3rem;
+  }
+
+  .toc a {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .toc a:hover {
+    color: var(--color-accent-strong);
+  }
+
+  .toc-depth-3 {
+    padding-left: var(--space-2);
+  }
+</style>

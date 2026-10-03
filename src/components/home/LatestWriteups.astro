@@ -1,0 +1,34 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import WriteupCard from '../writeups/WriteupCard.astro';
+import Card from '../ui/Card.astro';
+import { getPublicWriteups } from '../../lib/collections';
+
+const writeups = (await getPublicWriteups()).slice(0, 3);
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Latest write-ups" href="/writeups" />
+
+    {writeups.length > 0 ? (
+      <div class="grid-auto">
+        {writeups.map((entry) => <WriteupCard entry={entry} />)}
+      </div>
+    ) : (
+      <Card>
+        <p class="empty-state text-secondary">
+          Technical write-ups will be published here as they are completed.
+        </p>
+      </Card>
+    )}
+  </div>
+</section>
+
+<style>
+  .empty-state {
+    font-size: var(--text-sm);
+    text-align: center;
+    padding-block: var(--space-2);
+  }
+</style>

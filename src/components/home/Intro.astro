@@ -1,0 +1,21 @@
+---
+import { PROFILE } from '../../data/profile';
+---
+
+<section class="section-tight intro">
+  <div class="page">
+    <p class="intro-text prose-width">{PROFILE.longIntro[0]}</p>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-top: 0;
+  }
+
+  .intro-text {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-primary);
+  }
+</style>

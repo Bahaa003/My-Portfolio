@@ -1,0 +1,148 @@
+---
+import CvLayout from '../layouts/CvLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Badge from '../components/ui/Badge.astro';
+import { CV } from '../data/cv';
+
+const hasDownload = Boolean(CV.pdfPath);
+---
+
+<CvLayout title="CV" description="CV of Bahaa Aldeen Nawlo, junior penetration tester.">
+  <header class="cv-header">
+    <p class="mono text-secondary">CV</p>
+    <h1>Bahaa Aldeen Nawlo</h1>
+    <p class="text-secondary cv-subtitle">Junior Web Penetration Tester · Web Application Security · API Security</p>
+    {hasDownload && <Button href={CV.pdfPath as string} variant="primary">Download PDF</Button>}
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p>{CV.summary}</p>
+  </section>
+
+  <section>
+    <h2>Professional Experience</h2>
+    {CV.experience.map((exp) => (
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <strong>{exp.role}</strong>
+          <span class="mono text-secondary">{exp.period}</span>
+        </div>
+        <p class="text-secondary cv-org">{exp.org}</p>
+        <p>{exp.summary}</p>
+        <ul class="cv-list">
+          {exp.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section>
+    <h2>Selected Security Work</h2>
+    {CV.selectedSecurityWork.map((item) => (
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <strong>{item.title}</strong>
+          <Badge tone="warning">{item.confidentiality}</Badge>
+        </div>
+        <p>{item.description}</p>
+      </div>
+    ))}
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+    <p class="cv-skill-group"><strong>Web & API Security:</strong> {CV.skills.testing.join(', ')}</p>
+    <p class="cv-skill-group"><strong>Programming & Scripting:</strong> {CV.skills.programming.join(', ')}</p>
+    <p class="cv-skill-group"><strong>Web Technologies:</strong> {CV.skills.web.join(', ')}</p>
+    <p class="cv-skill-group"><strong>Operating Systems:</strong> {CV.skills.systems.join(', ')}</p>
+    <p class="cv-skill-group"><strong>Security Tools:</strong> {CV.skills.tools.join(', ')}</p>
+    <p class="cv-skill-group"><strong>Reporting:</strong> {CV.skills.reporting.join(', ')}</p>
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <ul class="cv-list">
+      {CV.certifications.map((c) => (
+        <li>{c.name} — <span class="text-secondary">{c.issuer}</span></li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Training</h2>
+    <ul class="cv-list">
+      {CV.training.map((t) => (
+        <li>{t.name} — <span class="text-secondary">{t.detail}</span></li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <ul class="cv-list">
+      {CV.education.map((e) => (
+        <li>{e.degree} — <span class="text-secondary">{e.institution}, {e.year}</span></li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <ul class="cv-list">
+      {CV.languages.map((l) => (
+        <li>{l.language} — <span class="text-secondary">{l.level}</span></li>
+      ))}
+    </ul>
+  </section>
+</CvLayout>
+
+<style>
+  .cv-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .cv-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem var(--space-2);
+  }
+
+  .cv-subtitle {
+    margin-top: 0.25rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .cv-entry {
+    margin-bottom: var(--space-3);
+  }
+
+  .cv-entry-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .cv-org {
+    font-size: var(--text-sm);
+    margin-top: 0.15rem;
+  }
+
+  .cv-list {
+    margin-top: var(--space-1);
+    padding-left: 1.1rem;
+    list-style: disc;
+  }
+
+  .cv-list li {
+    margin-block: 0.3rem;
+    font-size: var(--text-sm);
+  }
+
+  .cv-skill-group {
+    font-size: var(--text-sm);
+    margin-block: 0.4rem;
+    line-height: var(--leading-relaxed);
+  }
+</style>

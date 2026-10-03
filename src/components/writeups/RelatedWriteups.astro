@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import WriteupCard from './WriteupCard.astro';
+
+interface Props {
+  current: CollectionEntry<'writeups'>;
+  all: CollectionEntry<'writeups'>[];
+}
+
+const { current, all } = Astro.props;
+
+const related = all
+  .filter((entry) => entry.id !== current.id)
+  .filter((entry) => entry.data.tags.some((tag) => current.data.tags.includes(tag)))
+  .slice(0, 3);
+---
+
+{related.length > 0 && (
+  <section class="related-writeups">
+    <h2>Related write-ups</h2>
+    <div class="grid-auto">
+      {related.map((entry) => <WriteupCard entry={entry} />)}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-writeups {
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .related-writeups h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+</style>

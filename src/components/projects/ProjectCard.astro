@@ -1,0 +1,71 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+import Tag from '../ui/Tag.astro';
+import { entrySlug } from '../../lib/collections';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+
+const categoryLabel: Record<string, string> = {
+  'professional-security-work': 'Professional Security Work',
+  'security-investigation': 'Security Investigation',
+  'personal-project': 'Personal Project',
+  research: 'Research',
+};
+
+const dateStr = entry.data.date
+  ? entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+  : null;
+---
+
+<Card href={`/projects/${entrySlug(entry)}`}>
+  <article class="project-card">
+    <div class="project-card-top">
+      <span class="mono text-secondary project-category">{categoryLabel[entry.data.category]}</span>
+      {entry.data.confidentiality !== 'public' && <Badge tone="warning">{entry.data.confidentiality}</Badge>}
+    </div>
+    <h3>{entry.data.title}</h3>
+    <p class="text-secondary">{entry.data.description}</p>
+    <p class="project-meta mono text-secondary">{dateStr ? `${dateStr} · ` : ''}{entry.data.status}</p>
+    {entry.data.tags.length > 0 && (
+      <div class="project-tags">
+        {entry.data.tags.map((tag) => <Tag>{tag}</Tag>)}
+      </div>
+    )}
+  </article>
+</Card>
+
+<style>
+  .project-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-1);
+  }
+
+  .project-category {
+    font-size: var(--text-xs);
+  }
+
+  .project-card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .project-meta {
+    font-size: var(--text-xs);
+    margin-top: var(--space-2);
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+  }
+</style>

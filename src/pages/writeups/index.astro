@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WriteupCard from '../../components/writeups/WriteupCard.astro';
+import { getPublicWriteups } from '../../lib/collections';
+
+const writeups = await getPublicWriteups();
+---
+
+<BaseLayout
+  title="Write-ups"
+  description="Security research write-ups by Bahaa Aldeen Nawlo covering web application and API vulnerabilities."
+>
+  <section class="page section">
+    <div class="index-header">
+      <p class="mono text-secondary">Write-ups</p>
+      <h1>Security research write-ups</h1>
+    </div>
+
+    {writeups.length === 0 ? (
+      <p class="text-secondary">CONTENT_PLACEHOLDER — no write-ups published yet.</p>
+    ) : (
+      <div class="grid-auto">
+        {writeups.map((entry) => <WriteupCard entry={entry} />)}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .index-header {
+    margin-bottom: var(--space-5);
+  }
+
+  .index-header h1 {
+    font-size: var(--text-3xl);
+    margin-block: 0.25rem 0;
+  }
+</style>

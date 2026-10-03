@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  entry: CollectionEntry<'labs'>;
+}
+
+const { entry } = Astro.props;
+const { title, platform, vulnerabilityCategory, difficulty, status, date, writeupUrl } = entry.data;
+
+const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<Card href={writeupUrl}>
+  <article class="lab-card">
+    <div class="lab-card-top">
+      <span class="mono text-secondary">{platform}</span>
+      <Badge tone={status === 'completed' ? 'success' : 'neutral'}>{status}</Badge>
+    </div>
+    <h3>{title}</h3>
+    <p class="text-secondary">{vulnerabilityCategory}{difficulty ? ` · ${difficulty}` : ''}</p>
+    <p class="lab-meta mono text-secondary">{dateStr}</p>
+  </article>
+</Card>
+
+<style>
+  .lab-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-1);
+  }
+
+  .lab-card h3 {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+
+  .lab-meta {
+    font-size: var(--text-xs);
+    margin-top: var(--space-1);
+  }
+</style>

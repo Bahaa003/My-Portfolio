@@ -1,0 +1,32 @@
+---
+interface Props {
+  level: 'redacted' | 'private';
+}
+
+const { level } = Astro.props;
+
+const copy =
+  level === 'redacted'
+    ? 'Details in this case study have been redacted or generalized to protect client confidentiality.'
+    : 'This content is private and not publicly available.';
+---
+
+<div class="confidentiality-notice" role="note">
+  <p>{copy}</p>
+</div>
+
+<style>
+  .confidentiality-notice {
+    border: var(--border-width) solid var(--color-warning);
+    background: var(--color-warning-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .confidentiality-notice p {
+    font-size: var(--text-sm);
+    color: var(--color-warning);
+    margin: 0;
+  }
+</style>

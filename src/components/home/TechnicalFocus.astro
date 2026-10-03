@@ -1,0 +1,82 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { CV } from '../../data/cv';
+
+// Curated subset of CV.skills.testing for the homepage highlight — every
+// label below is copied verbatim from src/data/cv.ts, nothing new is added.
+const webApiSecurity = [
+  'OWASP Top 10',
+  'SSRF',
+  'SQL Injection',
+  'Cross-Site Scripting (XSS)',
+  'CSRF',
+  'Path Traversal',
+  'Access Control Flaws',
+  'JWT Security Testing',
+].filter((item) => (CV.skills.testing as readonly string[]).includes(item));
+
+const groups = [
+  { label: 'Web & API Security', items: webApiSecurity },
+  { label: 'Tools', items: CV.skills.tools },
+  { label: 'Programming & Scripting', items: CV.skills.programming },
+] as const;
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Technical focus" href="/cv" linkLabel="Full technical skills" />
+    <div class="focus-grid">
+      {
+        groups.map((group) => (
+          <div class="focus-group">
+            <h3 class="mono text-secondary">{group.label}</h3>
+            <ul>
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .focus-group h3 {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .focus-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .focus-group li {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.55rem;
+  }
+
+  @media (max-width: 760px) {
+    .focus-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+  }
+</style>

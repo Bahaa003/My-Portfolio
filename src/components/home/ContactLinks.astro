@@ -1,0 +1,45 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { SOCIAL_LINKS } from '../../config/site';
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Get in touch" href="/contact" linkLabel="Contact page" />
+    <ul class="contact-links">
+      {
+        SOCIAL_LINKS.map((social) => (
+          <li>
+            <a href={social.href} rel="me noreferrer" target={social.href.startsWith('http') ? '_blank' : undefined}>
+              {social.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .contact-links a {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .contact-links a:hover {
+    color: var(--color-accent-strong);
+    border-color: var(--color-accent);
+  }
+</style>

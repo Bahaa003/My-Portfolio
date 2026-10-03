@@ -1,0 +1,152 @@
+---
+import Button from '../ui/Button.astro';
+import { PROFILE } from '../../data/profile';
+import { SOCIAL_LINKS } from '../../config/site';
+---
+
+<section class="hero section">
+  <div class="page hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow mono text-secondary">{PROFILE.title}</p>
+      <h1 class="hero-name">{PROFILE.name}</h1>
+      <p class="hero-focus text-secondary">{PROFILE.focusAreas.join(' · ')}</p>
+      <p class="hero-summary">{PROFILE.shortIntro}</p>
+
+      <div class="hero-ctas">
+        <Button href="/work" variant="primary">View My Work</Button>
+        <Button href="/cv" variant="secondary">View CV</Button>
+      </div>
+
+      <nav class="hero-links" aria-label="Professional profiles">
+        {
+          SOCIAL_LINKS.map((social) => (
+            <a
+              href={social.href}
+              rel="me noreferrer"
+              target={social.href.startsWith('http') ? '_blank' : undefined}
+            >
+              {social.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <aside class="hero-facts" aria-label="Profile highlights">
+      <div class="fact">
+        <strong>6</strong>
+        <span>security reports authored</span>
+      </div>
+      <div class="fact">
+        <strong>2</strong>
+        <span>additional reports reviewed</span>
+      </div>
+      <div class="fact">
+        <strong>2026</strong>
+        <span>Computer Science graduate</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-6);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    gap: var(--space-6);
+    align-items: end;
+  }
+
+  .hero-eyebrow {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-1);
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    max-width: 9ch;
+    letter-spacing: -0.045em;
+  }
+
+  .hero-focus {
+    font-size: var(--text-lg);
+    margin-top: var(--space-2);
+    max-width: 42ch;
+  }
+
+  .hero-summary {
+    max-width: 62ch;
+    margin-top: var(--space-3);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .hero-links a:hover {
+    color: var(--color-accent-strong);
+  }
+
+  .hero-facts {
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .fact {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .fact strong {
+    font-size: var(--text-xl);
+    color: var(--color-accent-strong);
+  }
+
+  .fact span {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    align-self: center;
+  }
+
+  @media (max-width: 800px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .hero-name {
+      max-width: 12ch;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: var(--space-5);
+    }
+
+    .hero-name {
+      font-size: var(--text-3xl);
+    }
+  }
+</style>

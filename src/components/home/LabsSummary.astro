@@ -1,0 +1,53 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import LabCard from '../labs/LabCard.astro';
+import Card from '../ui/Card.astro';
+import { getPublicLabs } from '../../lib/collections';
+
+const labs = (await getPublicLabs()).slice(0, 3);
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Training & labs" href="/labs" />
+
+    {labs.length > 0 ? (
+      <div class="grid-auto">
+        {labs.map((entry) => <LabCard entry={entry} />)}
+      </div>
+    ) : (
+      <div class="grid-auto">
+        <Card>
+          <article class="training-card">
+            <span class="mono text-secondary">PortSwigger</span>
+            <h3>Web Security Academy</h3>
+            <p class="text-secondary">Completed hands-on labs across multiple web vulnerability categories.</p>
+          </article>
+        </Card>
+        <Card>
+          <article class="training-card">
+            <span class="mono text-secondary">TryHackMe</span>
+            <h3>Junior Penetration Tester</h3>
+            <p class="text-secondary">JPT certification with practical work across web security, networking, and privilege escalation.</p>
+          </article>
+        </Card>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .training-card {
+    min-height: 150px;
+  }
+
+  .training-card h3 {
+    font-size: var(--text-lg);
+    margin-block: var(--space-1);
+  }
+
+  .training-card p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>

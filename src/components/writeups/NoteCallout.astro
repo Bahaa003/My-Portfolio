@@ -1,0 +1,28 @@
+---
+---
+
+<div class="callout callout-note" role="note">
+  <p class="callout-label mono">Note</p>
+  <div class="callout-body"><slot /></div>
+</div>
+
+<style>
+  .callout {
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-accent-muted);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-2);
+    margin-block: var(--space-3);
+  }
+
+  .callout-label {
+    font-size: var(--text-xs);
+    color: var(--color-accent-strong);
+    margin-bottom: 0.35rem;
+  }
+
+  .callout-body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+title: "TODO — Write-up title"
+description: "TODO — one to two sentence summary of the finding, written for the listing card."
+date: 2026-01-01
+tags: ["TODO-tag"]
+category: "web"
+difficulty: "medium"
+technologies: ["TODO"]
+featured: false
+draft: true
+confidentiality: "public"
+---
+
+import HttpBlock from '../../components/writeups/HttpBlock.astro';
+import NoteCallout from '../../components/writeups/NoteCallout.astro';
+import WarningCallout from '../../components/writeups/WarningCallout.astro';
+
+This is a template file (`draft: true`, so it never appears on `/writeups`,
+the homepage, or the RSS feed). Copy it to start a real write-up, fill in
+the frontmatter and content, then set `draft: false`.
+
+## Overview
+
+TODO — describe the target/scope at a high level (redact anything
+confidential) and the vulnerability class involved.
+
+## Steps
+
+TODO — walk through the testing process.
+
+<NoteCallout>
+  Use this for background context or a useful observation that isn't a warning.
+</NoteCallout>
+
+<HttpBlock label="Request">
+GET /api/example HTTP/1.1
+Host: example.com
+</HttpBlock>
+
+<WarningCallout>
+  Use this to flag anything readers should be careful about, e.g. only
+  testing in-scope targets with authorization.
+</WarningCallout>
+
+## Impact
+
+TODO.
+
+## Remediation
+
+TODO.

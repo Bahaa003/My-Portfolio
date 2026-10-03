@@ -1,0 +1,39 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="http-block">
+  {label && <div class="http-block-label mono">{label}</div>}
+  <pre class="http-block-body mono"><slot /></pre>
+</div>
+
+<style>
+  .http-block {
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-block: var(--space-3);
+  }
+
+  .http-block-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    padding: var(--space-1) var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .http-block-body {
+    margin: 0;
+    padding: var(--space-2);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    overflow-x: auto;
+    background: var(--color-bg);
+    white-space: pre;
+  }
+</style>

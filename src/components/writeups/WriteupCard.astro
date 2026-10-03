@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Card from '../ui/Card.astro';
+import Tag from '../ui/Tag.astro';
+import { entrySlug } from '../../lib/collections';
+import { estimateReadingTime } from '../../lib/readingTime';
+
+interface Props {
+  entry: CollectionEntry<'writeups'>;
+}
+
+const { entry } = Astro.props;
+const { minutes } = estimateReadingTime(entry.body ?? '');
+const dateStr = entry.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<Card href={`/writeups/${entrySlug(entry)}`}>
+  <article class="writeup-card">
+    {entry.data.cover && (
+      <img src={entry.data.cover.src} alt={entry.data.coverAlt ?? ''} class="writeup-cover" />
+    )}
+    <h3>{entry.data.title}</h3>
+    <p class="text-secondary">{entry.data.description}</p>
+    <p class="writeup-meta mono text-secondary">
+      {dateStr} · {minutes} min read
+    </p>
+    {entry.data.tags.length > 0 && (
+      <div class="writeup-tags">
+        {entry.data.tags.map((tag) => <Tag>{tag}</Tag>)}
+      </div>
+    )}
+  </article>
+</Card>
+
+<style>
+  .writeup-card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .writeup-cover {
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-2);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .writeup-meta {
+    font-size: var(--text-xs);
+    margin-top: var(--space-2);
+  }
+
+  .writeup-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+  }
+</style>

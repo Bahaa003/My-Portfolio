@@ -1,0 +1,40 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page section cv-page">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  .cv-page {
+    max-width: var(--max-width-content);
+  }
+
+  .cv-page :global(section) {
+    margin-bottom: var(--space-5);
+  }
+
+  .cv-page :global(h2) {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  @media print {
+    .cv-page :global(header),
+    .cv-page :global(footer) {
+      display: none;
+    }
+  }
+</style>

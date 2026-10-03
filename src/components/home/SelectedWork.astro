@@ -1,0 +1,69 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+
+// Curated, non-identifying categories of work. Deliberately static rather
+// than pulled from the projects collection: these are stable category
+// descriptions, not individual case studies, and must never reference a
+// client, employer, or confidential target.
+const categories = [
+  {
+    eyebrow: '01',
+    title: 'Web & API Security Assessments',
+    description:
+      'Authorized security assessments covering web applications, APIs, authentication, authorization, session handling, and common web application vulnerabilities.',
+    href: '/projects/redacted-security-assessments',
+  },
+  {
+    eyebrow: '02',
+    title: 'Configuration Assessments',
+    description:
+      'External assessment of security configuration, HTTP security headers, TLS/HTTP controls, DNS exposure, and other externally observable security controls.',
+    href: '/work',
+  },
+  {
+    eyebrow: '03',
+    title: 'Security Investigation',
+    description:
+      'Technical investigation of publicly accessible websites, including application and infrastructure analysis, evidence collection, and security documentation.',
+    href: '/projects/security-investigation',
+  },
+] as const;
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Selected work" href="/work" linkLabel="View all work" />
+    <div class="grid-auto">
+      {
+        categories.map((c) => (
+          <Card href={c.href}>
+            <article class="work-category">
+              <span class="mono text-secondary">{c.eyebrow}</span>
+              <h3>{c.title}</h3>
+              <p class="text-secondary">{c.description}</p>
+            </article>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .work-category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-height: 100%;
+  }
+
+  .work-category h3 {
+    font-size: var(--text-lg);
+  }
+
+  .work-category p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>

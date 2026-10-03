@@ -1,0 +1,58 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import Badge from '../ui/Badge.astro';
+import { CV } from '../../data/cv';
+
+// Sourced directly from src/data/cv.ts — nothing invented here.
+const certEntries = CV.certifications.map((c) => ({
+  kind: 'Certification' as const,
+  name: c.name,
+  detail: c.issuer,
+}));
+
+const trainingEntries = CV.training.map((t) => ({
+  kind: 'Training' as const,
+  name: t.name,
+  detail: t.detail,
+}));
+
+const entries = [...certEntries, ...trainingEntries];
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="Training & certifications" href="/cv" linkLabel="Full CV" />
+    <div class="grid-auto">
+      {
+        entries.map((entry) => (
+          <Card>
+            <article class="training-entry">
+              <Badge tone="neutral">{entry.kind}</Badge>
+              <h3>{entry.name}</h3>
+              <p class="text-secondary">{entry.detail}</p>
+            </article>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .training-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .training-entry h3 {
+    font-size: var(--text-base);
+    margin-top: var(--space-1);
+  }
+
+  .training-entry p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+</style>
