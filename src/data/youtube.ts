@@ -8,11 +8,11 @@ export interface YoutubeVideo {
 
 export const YOUTUBE_VIDEOS: YoutubeVideo[] = [
   {
-    title: 'Latest video',
+    title: 'Portswigger - Access Control - Lab #1 Unprotected admin functionality',
     url: 'https://www.youtube.com/watch?v=ATpSXGSyFEw',
-    thumbnail: 'https://i.ytimg.com/vi/ATpSXGSyFEw/maxresdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/ATpSXGSyFEw/hqdefault.jpg',
     date: '2026-10-04',
-    description: 'Watch my latest video on YouTube.',
+    description: 'PortSwigger access control lab walkthrough.',
   },
 ];
 
