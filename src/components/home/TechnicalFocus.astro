@@ -2,23 +2,30 @@
 import SectionHeading from '../ui/SectionHeading.astro';
 import { CV } from '../../data/cv';
 
-// Curated subset of CV.skills.testing for the homepage highlight — every
-// label below is copied verbatim from src/data/cv.ts, nothing new is added.
+// Curated, homepage-sized subset of src/data/cv.ts — shortened labels
+// (e.g. "Authentication & Authorization" instead of the CV's
+// "Authentication & Authorization Testing") refer to the same skills
+// listed in the full CV; nothing new is introduced here. The complete
+// list (including Dart/Flutter, n8n, GraphQL, Django, OS, etc.) stays on
+// the /cv page.
 const webApiSecurity = [
   'OWASP Top 10',
-  'SSRF',
+  'Authentication & Authorization',
+  'JWT Security Testing',
   'SQL Injection',
   'Cross-Site Scripting (XSS)',
+  'SSRF',
   'CSRF',
   'Path Traversal',
   'Access Control Flaws',
-  'JWT Security Testing',
-].filter((item) => (CV.skills.testing as readonly string[]).includes(item));
+] as const;
+
+const programming = ['Python', 'Bash Scripting'] as const;
 
 const groups = [
   { label: 'Web & API Security', items: webApiSecurity },
-  { label: 'Tools', items: CV.skills.tools },
-  { label: 'Programming & Scripting', items: CV.skills.programming },
+  { label: 'Tooling', items: CV.skills.tools },
+  { label: 'Programming & Scripting', items: programming },
 ] as const;
 ---
 

@@ -1,17 +1,14 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
-import { PROFILE } from '../../data/profile';
-
-const german = PROFILE.languages.find((l) => l.language === 'German');
 ---
 
 <section class="section-tight">
   <div class="page">
     <SectionHeading title="About" href="/about" linkLabel="More about me" />
     <p class="prose-width about-preview-text">
-      {PROFILE.title}, Computer Science graduate, with practical experience in web application,
-      API, and security configuration assessments. I'm continuing to build on this through
-      hands-on labs, research, and technical write-ups{german ? ` — and working on German (${german.level}).` : '.'}
+      Computer Science graduate focused on web application security, API security, and practical
+      security assessment work. I continue developing through hands-on labs, research, and
+      technical documentation.
     </p>
   </div>
 </section>

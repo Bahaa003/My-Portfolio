@@ -1,7 +1,5 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
-import Card from '../ui/Card.astro';
-import Badge from '../ui/Badge.astro';
 import { CV } from '../../data/cv';
 
 // Sourced directly from src/data/cv.ts — nothing invented here.
@@ -23,36 +21,53 @@ const entries = [...certEntries, ...trainingEntries];
 <section class="section-tight">
   <div class="page">
     <SectionHeading title="Training & certifications" href="/cv" linkLabel="Full CV" />
-    <div class="grid-auto">
+    <ul class="training-list">
       {
         entries.map((entry) => (
-          <Card>
-            <article class="training-entry">
-              <Badge tone="neutral">{entry.kind}</Badge>
-              <h3>{entry.name}</h3>
-              <p class="text-secondary">{entry.detail}</p>
-            </article>
-          </Card>
+          <li class="training-row">
+            <span class="mono text-secondary training-kind">{entry.kind}</span>
+            <span class="training-name">{entry.name}</span>
+            <span class="text-secondary training-detail">{entry.detail}</span>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </div>
 </section>
 
 <style>
-  .training-entry {
+  .training-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
   }
 
-  .training-entry h3 {
+  .training-row {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr 1fr;
+    gap: var(--space-2);
+    align-items: baseline;
+    padding-block: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .training-kind {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .training-name {
     font-size: var(--text-base);
-    margin-top: var(--space-1);
   }
 
-  .training-entry p {
+  .training-detail {
     font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 640px) {
+    .training-row {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
   }
 </style>

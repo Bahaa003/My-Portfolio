@@ -6,6 +6,7 @@ import { SOCIAL_LINKS } from '../../config/site';
 <section class="section-tight">
   <div class="page">
     <SectionHeading title="Get in touch" href="/contact" linkLabel="Contact page" />
+    <p class="contact-lede text-secondary">Have a security assessment or security engineering opportunity?</p>
     <ul class="contact-links">
       {
         SOCIAL_LINKS.map((social) => (
@@ -21,6 +22,12 @@ import { SOCIAL_LINKS } from '../../config/site';
 </section>
 
 <style>
+  .contact-lede {
+    font-size: var(--text-lg);
+    max-width: 36ch;
+    margin-bottom: var(--space-3);
+  }
+
   .contact-links {
     display: flex;
     flex-wrap: wrap;

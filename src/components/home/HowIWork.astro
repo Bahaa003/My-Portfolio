@@ -1,0 +1,73 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+// Describes working methodology, not a claim that every engagement
+// followed these exact steps in this exact order.
+const steps = [
+  {
+    eyebrow: '01',
+    title: 'Understand',
+    description:
+      'Map application functionality, endpoints, authentication, authorization boundaries, inputs, and exposed security controls.',
+  },
+  {
+    eyebrow: '02',
+    title: 'Validate',
+    description:
+      'Analyze requests and responses, test relevant security controls, reproduce findings, and distinguish real security issues from expected behavior.',
+  },
+  {
+    eyebrow: '03',
+    title: 'Document',
+    description:
+      'Capture evidence, describe impact and affected components, and produce clear technical findings with remediation guidance.',
+  },
+] as const;
+---
+
+<section class="section-tight">
+  <div class="page">
+    <SectionHeading title="How I work" />
+    <div class="how-grid">
+      {
+        steps.map((step) => (
+          <article class="how-step">
+            <span class="mono text-secondary">{step.eyebrow}</span>
+            <h3>{step.title}</h3>
+            <p class="text-secondary">{step.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .how-step {
+    border-top: var(--border-width) solid var(--color-border-strong);
+    padding-top: var(--space-2);
+  }
+
+  .how-step h3 {
+    font-size: var(--text-lg);
+    margin-block: var(--space-1);
+  }
+
+  .how-step p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 760px) {
+    .how-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+</style>

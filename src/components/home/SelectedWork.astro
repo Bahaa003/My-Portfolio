@@ -10,22 +10,25 @@ const categories = [
   {
     eyebrow: '01',
     title: 'Web & API Security Assessments',
-    description:
-      'Authorized security assessments covering web applications, APIs, authentication, authorization, session handling, and common web application vulnerabilities.',
+    scope: 'Web applications · APIs',
+    focus: 'Authentication · Authorization · Session handling · JWT · Common web vulnerabilities',
+    work: 'Request/response analysis · Vulnerability validation · Evidence collection · Technical reporting',
     href: '/projects/redacted-security-assessments',
   },
   {
     eyebrow: '02',
     title: 'Configuration Assessments',
-    description:
-      'External assessment of security configuration, HTTP security headers, TLS/HTTP controls, DNS exposure, and other externally observable security controls.',
+    scope: 'Externally observable infrastructure and application configuration',
+    focus: 'HTTP security headers · TLS/HTTP controls · DNS exposure · Security configuration',
+    work: 'Configuration review · Evidence collection · Risk documentation · Remediation recommendations',
     href: '/work',
   },
   {
     eyebrow: '03',
     title: 'Security Investigation',
-    description:
-      'Technical investigation of publicly accessible websites, including application and infrastructure analysis, evidence collection, and security documentation.',
+    scope: 'Publicly accessible web assets',
+    focus: 'Application and infrastructure analysis · Technical research · Evidence collection',
+    work: 'Investigation · Documentation · Technical analysis',
     href: '/projects/security-investigation',
   },
 ] as const;
@@ -33,7 +36,7 @@ const categories = [
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Selected work" href="/work" linkLabel="View all work" />
+    <SectionHeading title="Selected security work" href="/work" linkLabel="View all work" />
     <div class="grid-auto">
       {
         categories.map((c) => (
@@ -41,7 +44,21 @@ const categories = [
             <article class="work-category">
               <span class="mono text-secondary">{c.eyebrow}</span>
               <h3>{c.title}</h3>
-              <p class="text-secondary">{c.description}</p>
+
+              <dl>
+                <div>
+                  <dt class="mono text-secondary">Scope</dt>
+                  <dd>{c.scope}</dd>
+                </div>
+                <div>
+                  <dt class="mono text-secondary">Focus</dt>
+                  <dd>{c.focus}</dd>
+                </div>
+                <div>
+                  <dt class="mono text-secondary">Work</dt>
+                  <dd>{c.work}</dd>
+                </div>
+              </dl>
             </article>
           </Card>
         ))
@@ -60,10 +77,27 @@ const categories = [
 
   .work-category h3 {
     font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
   }
 
-  .work-category p {
+  .work-category dl {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+
+  .work-category dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+  }
+
+  .work-category dd {
+    margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
   }
 </style>
