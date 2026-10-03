@@ -1,51 +1,135 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/projects/ProjectCard.astro';
-import { getPublicProjects } from '../lib/collections';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
+import { getPublicProjects, entrySlug } from '../lib/collections';
 
 const projects = await getPublicProjects();
 
+function findBySlug(slug: string) {
+  return projects.find((p) => entrySlug(p) === slug);
+}
+
+// The two real, redaction-reviewed case studies currently published.
+const webApiEntry = findBySlug('redacted-security-assessments');
+const investigationEntry = findBySlug('security-investigation');
+
+// Three categories of work. Descriptions and focus areas are written from
+// what's already documented in the linked case studies / src/data/cv.ts —
+// nothing here names a client, target, or confidential detail. Where a
+// dedicated case study exists, confidentiality status and the link are
+// pulled live from that entry rather than hardcoded.
 const categories = [
-  { key: 'professional-security-work', label: 'Professional Security Work' },
-  { key: 'security-investigation', label: 'Security Investigations' },
-  { key: 'personal-project', label: 'Personal Projects' },
-  { key: 'research', label: 'Research' },
+  {
+    eyebrow: '01',
+    title: 'Web & API Security Assessments',
+    description:
+      'Authorized assessment work covering web applications and APIs — authentication, authorization, session handling, application behavior, and common web application vulnerabilities.',
+    focus: ['Authentication & Authorization', 'Session Handling', 'Vulnerability Identification & Validation', 'Technical Reporting'],
+    entry: webApiEntry,
+    note: null,
+  },
+  {
+    eyebrow: '02',
+    title: 'Configuration Assessments',
+    description:
+      'External review of security configuration — HTTP security headers, TLS/HTTP controls, DNS exposure, and other externally observable security settings.',
+    focus: ['HTTP Security Headers', 'TLS/HTTP Controls', 'DNS Exposure', 'Security Misconfiguration Review'],
+    entry: webApiEntry,
+    note: 'Documented as part of the Web & API Security Assessments case study.',
+  },
+  {
+    eyebrow: '03',
+    title: 'Security Investigation',
+    description:
+      'Authorized investigation of a publicly accessible website — public-information research, website and infrastructure analysis, evidence collection, and technical documentation.',
+    focus: ['Public-Information Research', 'Website & Infrastructure Analysis', 'Evidence Collection', 'Technical Documentation'],
+    entry: investigationEntry,
+    note: null,
+  },
 ] as const;
 
-const grouped = categories.map((c) => ({
-  ...c,
-  entries: projects.filter((p) => p.data.category === c.key),
-}));
+const practicalFocus = [
+  'Web Application Security',
+  'API Security',
+  'Authentication & Authorization',
+  'Security Configuration',
+  'Vulnerability Validation',
+  'Technical Security Reporting',
+] as const;
 ---
 
 <BaseLayout
   title="Work"
-  description="Professional security work, investigations, personal projects, and research by Bahaa Aldeen Nawlo."
+  description="Authorized security assessment work by Bahaa Aldeen Nawlo — web and API security assessments, configuration assessments, and security investigation, presented without confidential client or target details."
 >
+  <!-- Page introduction -->
   <section class="page section">
     <div class="work-header">
       <p class="mono text-secondary">Work</p>
-      <h1>Portfolio</h1>
+      <h1>Security assessment work</h1>
       <p class="text-secondary prose-width">
-        Professional security assessments, independent investigations, personal projects, and research.
-        Client work is summarized without confidential details.
+        Authorized security assessment work covering web applications, APIs, and externally
+        observable infrastructure. Client names, targets, and confidential findings are omitted —
+        the material below represents the type of work, scope, and methodology involved.
       </p>
     </div>
 
-    {projects.length === 0 && (
-      <p class="text-secondary">CONTENT_PLACEHOLDER — no published work yet. Entries will appear here as they're added.</p>
-    )}
+    <!-- Selected work -->
+    <div class="work-section">
+      <SectionHeading title="Selected work" />
+      <div class="grid-auto">
+        {
+          categories.map((c) => {
+            const href = c.entry ? `/projects/${entrySlug(c.entry)}` : undefined;
+            const confidentiality = c.entry?.data.confidentiality;
+            return (
+              <Card href={href}>
+                <article class="work-category">
+                  <div class="work-category-top">
+                    <span class="mono text-secondary">{c.eyebrow}</span>
+                    {confidentiality && confidentiality !== 'public' && (
+                      <Badge tone="warning">{confidentiality}</Badge>
+                    )}
+                  </div>
+                  <h3>{c.title}</h3>
+                  <p class="text-secondary">{c.description}</p>
 
-    {grouped.map((group) =>
-      group.entries.length > 0 ? (
-        <div class="work-group">
-          <h2>{group.label}</h2>
-          <div class="grid-auto">
-            {group.entries.map((entry) => <ProjectCard entry={entry} />)}
-          </div>
-        </div>
-      ) : null
-    )}
+                  <dl>
+                    <dt class="mono text-secondary">Focus</dt>
+                    <dd>{c.focus.join(' · ')}</dd>
+                  </dl>
+
+                  {c.note && <p class="work-category-note text-secondary">{c.note}</p>}
+                  {href && <span class="work-category-link">View case study →</span>}
+                </article>
+              </Card>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <!-- Practical focus -->
+    <div class="work-section">
+      <SectionHeading title="Practical focus" href="/cv" linkLabel="Full technical skills" />
+      <ul class="focus-tags">
+        {practicalFocus.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <!-- Confidentiality note -->
+    <div class="work-section">
+      <div class="confidentiality-note">
+        <p>
+          Client names, target domains, infrastructure details, and sensitive findings are
+          intentionally omitted from this portfolio. Where a case study is marked
+          <strong> redacted</strong>, the material shown reflects the type of work, scope, and
+          methodology involved rather than engagement-specific detail.
+        </p>
+      </div>
+    </div>
   </section>
 </BaseLayout>
 
@@ -59,14 +143,105 @@ const grouped = categories.map((c) => ({
     margin-block: 0.25rem var(--space-2);
   }
 
-  .work-group {
-    margin-bottom: var(--space-5);
+  .work-section {
+    margin-top: var(--space-5);
   }
 
-  .work-group h2 {
+  /* Selected work cards */
+  .work-category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-height: 100%;
+  }
+
+  .work-category-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .work-category h3 {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-3);
-    padding-bottom: var(--space-1);
-    border-bottom: var(--border-width) solid var(--color-border);
+    margin-bottom: var(--space-1);
+  }
+
+  .work-category > p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .work-category dl {
+    margin-top: var(--space-2);
+  }
+
+  .work-category dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.2rem;
+  }
+
+  .work-category dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+  }
+
+  .work-category-note {
+    font-size: var(--text-xs);
+    font-style: normal;
+    margin-top: var(--space-1);
+  }
+
+  .work-category-link {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-accent-strong);
+  }
+
+  /* Practical focus */
+  .focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .focus-tags li {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.65rem;
+  }
+
+  /* Confidentiality note */
+  .confidentiality-note {
+    border: var(--border-width) solid var(--color-warning);
+    background: var(--color-warning-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3);
+  }
+
+  .confidentiality-note p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--color-warning);
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  .confidentiality-note strong {
+    color: inherit;
+  }
+
+  @media (max-width: 640px) {
+    .work-section {
+      margin-top: var(--space-4);
+    }
   }
 </style>
