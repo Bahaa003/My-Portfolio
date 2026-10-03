@@ -119,10 +119,7 @@ export default async (request) => {
 
       const session = seal({ token: tokenData.access_token, login: user.login, expiresAt: Date.now() + 8 * 60 * 60 * 1000 });
       return redirect(`${required('PUBLIC_SITE_URL').replace(/\/$/, '')}/admin?login=success`, {
-        'set-cookie': [
-          cookie(cookieName, session, { maxAge: 8 * 60 * 60 }),
-          cookie(stateCookieName, '', { maxAge: 0 }),
-        ],
+        'set-cookie': cookie(cookieName, session, { maxAge: 8 * 60 * 60 }),
       });
     }
 
