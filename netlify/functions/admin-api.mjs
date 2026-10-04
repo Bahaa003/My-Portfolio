@@ -91,7 +91,12 @@ export default async (request) => {
   try {
     const url = new URL(request.url);
     const action = url.searchParams.get('action') || 'list';
-    const collectionName = collection(url.searchParams.get('collection'));
+    let body = null;
+    if (request.method === 'POST') {
+      const rawBody = await request.text();
+      body = rawBody ? JSON.parse(rawBody) : null;
+    }
+    const collectionName = collection(url.searchParams.get('collection') || body?.collection);
 
     if (action === 'list') {
       const { response } = await github(request, `src/content/${collectionName}`);
@@ -113,7 +118,6 @@ export default async (request) => {
       return json({ path, sha: data.sha, content: decodeContent(data.content) });
     }
 
-    const body = await request.json();
     if (action === 'save') {
       const name = filename(body.name);
       const path = contentPath(collectionName, name);
