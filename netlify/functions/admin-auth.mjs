@@ -21,7 +21,7 @@ function cookie(name, value, options = {}) {
     'Path=/',
     'HttpOnly',
     'Secure',
-    'SameSite=Lax',
+    'SameSite=None',
   ];
   if (options.maxAge !== undefined) attributes.push(`Max-Age=${options.maxAge}`);
   return attributes.join('; ');
