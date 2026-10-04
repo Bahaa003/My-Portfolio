@@ -90,12 +90,12 @@ function decodeContent(encoded) {
 export default async (request) => {
   try {
     const url = new URL(request.url);
-    const action = url.searchParams.get('action') || 'list';
     let body = null;
     if (request.method === 'POST') {
       const rawBody = await request.text();
       body = rawBody ? JSON.parse(rawBody) : null;
     }
+    const action = url.searchParams.get('action') || body?.action || 'list';
     const collectionName = collection(url.searchParams.get('collection') || body?.collection);
 
     if (action === 'list') {
