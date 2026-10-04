@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../../config/site';
+import { withBase } from '../../lib/urls';
 
 interface Props {
   title?: string;
@@ -18,8 +19,8 @@ const {
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${SITE.shortTitle}` : SITE.title;
-const canonicalUrl = new URL(Astro.url.pathname, SITE.url).toString();
-const ogImageUrl = new URL(image, SITE.url).toString();
+const canonicalUrl = new URL(withBase(Astro.url.pathname), SITE.url).toString();
+const ogImageUrl = new URL(withBase(image), SITE.url).toString();
 ---
 
 <title>{pageTitle}</title>

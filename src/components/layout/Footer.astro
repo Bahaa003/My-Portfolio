@@ -1,5 +1,6 @@
 ---
 import { NAV_LINKS, SOCIAL_LINKS, SITE } from '../../config/site';
+import { withBase } from '../../lib/urls';
 
 const year = new Date().getFullYear();
 ---
@@ -10,7 +11,7 @@ const year = new Date().getFullYear();
       {
         NAV_LINKS.map((link, i) => (
           <>
-            <a href={link.href}>{link.label}</a>
+            <a href={withBase(link.href)}>{link.label}</a>
             {i < NAV_LINKS.length - 1 && <span aria-hidden="true">·</span>}
           </>
         ))

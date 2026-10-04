@@ -2,10 +2,9 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { SITE } from './src/config/site.ts';
 
 export default defineConfig({
-  site: SITE.url,
+  site: 'https://bahaa003.github.io',
   base: '/My-Portfolio',
   output: 'static',
   integrations: [mdx(), sitemap()],
