@@ -15,7 +15,7 @@ const posts = await getPublicBlogPosts();
     </div>
 
     {posts.length === 0 ? (
-      <p class="text-secondary">CONTENT_PLACEHOLDER — no posts published yet.</p>
+      <p class="text-secondary">No blog posts published yet.</p>
     ) : (
       <div class="stack">
         {posts.map((entry) => {

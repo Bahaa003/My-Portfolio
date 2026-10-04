@@ -17,7 +17,7 @@ const writeups = await getPublicWriteups();
     </div>
 
     {writeups.length === 0 ? (
-      <p class="text-secondary">CONTENT_PLACEHOLDER — no write-ups published yet.</p>
+      <p class="text-secondary">No write-ups published yet.</p>
     ) : (
       <div class="grid-auto">
         {writeups.map((entry) => <WriteupCard entry={entry} />)}
