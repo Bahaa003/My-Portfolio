@@ -1,10 +1,11 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 ---
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="About" href="/about" linkLabel="More about me" />
+    <SectionHeading title="About" href={withBase('/about')} linkLabel="More about me" />
     <p class="prose-width about-preview-text">
       Computer Science graduate focused on web application security, API security, and practical
       security assessment work. I continue developing through hands-on labs, research, and

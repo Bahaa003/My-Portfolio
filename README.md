@@ -84,3 +84,13 @@ Before publishing:
 - Add the real YouTube channel URL when the channel exists.
 - Verify `public/.well-known/security.txt` and the public contact address.
 - Enable HSTS only after the production domain is confirmed to be HTTPS-only and the deployment configuration is verified.
+
+## GitHub Pages deployment
+
+The production static site is configured for GitHub Pages at
+`https://bahaa003.github.io/My-Portfolio`. Pushes to `master` run
+`.github/workflows/deploy-pages.yml` and publish the `dist/` directory.
+
+The `/admin` publishing studio depends on Netlify Functions and is not
+available on GitHub Pages. Publish content by committing it to the repository
+or keep the Netlify site available separately for the editor.

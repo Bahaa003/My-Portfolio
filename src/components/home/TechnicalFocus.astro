@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import { CV } from '../../data/cv';
 
 // Curated, homepage-sized subset of src/data/cv.ts — shortened labels
@@ -31,7 +32,7 @@ const groups = [
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Technical focus" href="/cv" linkLabel="Full technical skills" />
+    <SectionHeading title="Technical focus" href={withBase('/cv')} linkLabel="Full technical skills" />
     <div class="focus-grid">
       {
         groups.map((group) => (

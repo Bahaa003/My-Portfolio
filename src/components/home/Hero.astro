@@ -2,6 +2,7 @@
 import Button from '../ui/Button.astro';
 import { PROFILE } from '../../data/profile';
 import { SOCIAL_LINKS } from '../../config/site';
+import { withBase } from '../../lib/urls';
 ---
 
 <section class="hero section">
@@ -13,8 +14,8 @@ import { SOCIAL_LINKS } from '../../config/site';
       <p class="hero-summary">{PROFILE.shortIntro}</p>
 
       <div class="hero-ctas">
-        <Button href="/work" variant="primary">View My Work</Button>
-        <Button href="/cv" variant="secondary">View CV</Button>
+        <Button href={withBase('/work')} variant="primary">View My Work</Button>
+        <Button href={withBase('/cv')} variant="secondary">View CV</Button>
       </div>
 
       <nav class="hero-links" aria-label="Professional profiles">
@@ -33,7 +34,7 @@ import { SOCIAL_LINKS } from '../../config/site';
     </div>
 
     <aside class="hero-aside" aria-label="Profile highlights">
-      <img class="hero-photo" src="/images/profile/Photo.jpeg" alt="Bahaa Aldeen Nawlo" />
+      <img class="hero-photo" src={withBase('/images/profile/Photo.jpeg')} alt="Bahaa Aldeen Nawlo" />
       <div class="hero-facts">
         <div class="fact">
           <strong>6</strong>

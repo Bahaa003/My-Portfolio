@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import { CV } from '../../data/cv';
 
 // Sourced directly from src/data/cv.ts — nothing invented here.
@@ -20,7 +21,7 @@ const entries = [...certEntries, ...trainingEntries];
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Training & certifications" href="/cv" linkLabel="Full CV" />
+    <SectionHeading title="Training & certifications" href={withBase('/cv')} linkLabel="Full CV" />
     <ul class="training-list">
       {
         entries.map((entry) => (

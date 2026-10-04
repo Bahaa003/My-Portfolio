@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import ProjectCard from '../projects/ProjectCard.astro';
 import { getPublicProjects } from '../../lib/collections';
 
@@ -11,7 +12,7 @@ const fallback = featured.length > 0 ? featured : projects.slice(0, 3);
 {fallback.length > 0 && (
   <section class="section-tight">
     <div class="page">
-      <SectionHeading title="Featured work" href="/work" linkLabel="View all work" />
+      <SectionHeading title="Featured work" href={withBase('/work')} linkLabel="View all work" />
       <div class="grid-auto">
         {fallback.map((entry) => <ProjectCard entry={entry} />)}
       </div>

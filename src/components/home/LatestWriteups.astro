@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import WriteupCard from '../writeups/WriteupCard.astro';
 import Card from '../ui/Card.astro';
 import { getPublicWriteups } from '../../lib/collections';
@@ -9,7 +10,7 @@ const writeups = (await getPublicWriteups()).slice(0, 3);
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Latest write-ups" href="/writeups" />
+    <SectionHeading title="Latest write-ups" href={withBase('/writeups')} />
 
     {writeups.length > 0 ? (
       <div class="grid-auto">

@@ -1,11 +1,12 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import { SOCIAL_LINKS } from '../../config/site';
 ---
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Get in touch" href="/contact" linkLabel="Contact page" />
+    <SectionHeading title="Get in touch" href={withBase('/contact')} linkLabel="Contact page" />
     <p class="contact-lede text-secondary">Have a security assessment or security engineering opportunity?</p>
     <ul class="contact-links">
       {

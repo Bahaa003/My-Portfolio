@@ -54,6 +54,13 @@ Only content with `draft: false` and non-private confidentiality is listed.
 The editor currently publishes public content; confidential or private content
 can still be managed manually in the repository when needed.
 
+## GitHub Pages note
+
+The public static site can be deployed to
+`https://bahaa003.github.io/My-Portfolio` using the GitHub Actions workflow.
+The `/admin` editor requires the Netlify Functions described above, so it does
+not work on the GitHub Pages deployment.
+
 ## Supported article content
 
 Markdown and MDX support headings, links, lists, tables, fenced syntax-highlighted

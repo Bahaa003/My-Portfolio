@@ -1,11 +1,12 @@
 ---
 import Nav from './Nav.astro';
 import { SITE } from '../../config/site';
+import { withBase } from '../../lib/urls';
 ---
 
 <header class="site-header">
   <div class="page site-header-inner">
-    <a href="/" class="site-brand">{SITE.shortTitle}</a>
+    <a href={withBase('/')} class="site-brand">{SITE.shortTitle}</a>
     <Nav />
   </div>
 </header>

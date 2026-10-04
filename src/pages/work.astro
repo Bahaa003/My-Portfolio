@@ -4,6 +4,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Card from '../components/ui/Card.astro';
 import Badge from '../components/ui/Badge.astro';
 import { getPublicProjects, entrySlug } from '../lib/collections';
+import { withBase } from '../lib/urls';
 
 const projects = await getPublicProjects();
 
@@ -82,7 +83,7 @@ const practicalFocus = [
       <div class="grid-auto">
         {
           categories.map((c) => {
-            const href = c.entry ? `/projects/${entrySlug(c.entry)}` : undefined;
+            const href = c.entry ? withBase(`/projects/${entrySlug(c.entry)}`) : undefined;
             const confidentiality = c.entry?.data.confidentiality;
             return (
               <Card href={href}>
@@ -113,7 +114,7 @@ const practicalFocus = [
 
     <!-- Practical focus -->
     <div class="work-section">
-      <SectionHeading title="Practical focus" href="/cv" linkLabel="Full technical skills" />
+      <SectionHeading title="Practical focus" href={withBase('/cv')} linkLabel="Full technical skills" />
       <ul class="focus-tags">
         {practicalFocus.map((item) => <li>{item}</li>)}
       </ul>

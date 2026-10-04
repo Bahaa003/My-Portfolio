@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import Card from '../ui/Card.astro';
 import { YOUTUBE_VIDEOS } from '../../data/youtube';
 
@@ -9,7 +10,7 @@ const videos = YOUTUBE_VIDEOS.slice(0, 3);
 {videos.length > 0 && (
   <section class="section-tight">
     <div class="page">
-      <SectionHeading title="Latest videos" href="/youtube" />
+      <SectionHeading title="Latest videos" href={withBase('/youtube')} />
       <div class="grid-auto">
         {videos.map((video) => (
           <Card href={video.url}>

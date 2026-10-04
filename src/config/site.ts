@@ -7,7 +7,7 @@ export const SITE = {
   shortTitle: 'Bahaa Aldeen Nawlo',
   description:
     'Portfolio of Bahaa Aldeen Nawlo, a junior web penetration tester focused on web application security, API security, and security assessments.',
-  url: 'https://funny-salmiakki-7239ae.netlify.app',
+  url: 'https://bahaa003.github.io/My-Portfolio',
   defaultOgImage: '/og-default.svg',
   locale: 'en',
 } as const;

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/ui/Card.astro';
 import Tag from '../../components/ui/Tag.astro';
 import { getPublicBlogPosts, entrySlug } from '../../lib/collections';
+import { withBase } from '../../lib/urls';
 
 const posts = await getPublicBlogPosts();
 ---
@@ -25,7 +26,7 @@ const posts = await getPublicBlogPosts();
             day: 'numeric',
           });
           return (
-            <Card href={`/blog/${entrySlug(entry)}`}>
+            <Card href={withBase(`/blog/${entrySlug(entry)}`)}>
               <h2>{entry.data.title}</h2>
               <p class="text-secondary">{entry.data.description}</p>
               <p class="mono text-secondary post-meta">{dateStr}</p>

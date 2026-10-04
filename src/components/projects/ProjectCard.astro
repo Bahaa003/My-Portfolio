@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Card from '../ui/Card.astro';
+import { withBase } from '../../lib/urls';
 import Badge from '../ui/Badge.astro';
 import Tag from '../ui/Tag.astro';
 import { entrySlug } from '../../lib/collections';
@@ -23,7 +24,7 @@ const dateStr = entry.data.date
   : null;
 ---
 
-<Card href={`/projects/${entrySlug(entry)}`}>
+<Card href={withBase(`/projects/${entrySlug(entry)}`)}>
   <article class="project-card">
     <div class="project-card-top">
       <span class="mono text-secondary project-category">{categoryLabel[entry.data.category]}</span>

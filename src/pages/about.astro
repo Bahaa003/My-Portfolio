@@ -4,6 +4,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Button from '../components/ui/Button.astro';
 import { PROFILE } from '../data/profile';
 import { CV } from '../data/cv';
+import { withBase } from '../lib/urls';
 
 // Curated, homepage-sized groupings of real CV content. Every item below
 // restates something already present in src/data/cv.ts (CV.experience
@@ -119,7 +120,7 @@ const securityTopics = [
   <!-- Technical focus -->
   <section class="page section-tight">
     <div class="page-inner">
-      <SectionHeading title="Technical focus" href="/cv" linkLabel="Full technical skills" />
+      <SectionHeading title="Technical focus" href={withBase('/cv')} linkLabel="Full technical skills" />
       <div class="focus-grid">
         <div class="focus-group">
           <h3 class="mono text-secondary">Security topics</h3>
@@ -140,7 +141,7 @@ const securityTopics = [
   <!-- Education & training -->
   <section class="page section-tight">
     <div class="prose-width">
-      <SectionHeading title="Education & training" href="/cv" linkLabel="Full CV" />
+      <SectionHeading title="Education & training" href={withBase('/cv')} linkLabel="Full CV" />
 
       <div class="edu-block">
         <h3 class="mono text-secondary">Education</h3>
@@ -206,9 +207,9 @@ const securityTopics = [
         Take a look at the work, review the full CV, or get in touch directly.
       </p>
       <div class="cta-buttons">
-        <Button href="/work" variant="secondary">View my work</Button>
-        <Button href="/cv" variant="secondary">View CV</Button>
-        <Button href="/contact" variant="primary">Contact</Button>
+        <Button href={withBase('/work')} variant="secondary">View my work</Button>
+        <Button href={withBase('/cv')} variant="secondary">View CV</Button>
+        <Button href={withBase('/contact')} variant="primary">Contact</Button>
       </div>
     </div>
   </section>

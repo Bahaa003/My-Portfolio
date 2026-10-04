@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Card from '../ui/Card.astro';
+import { withBase } from '../../lib/urls';
 import Tag from '../ui/Tag.astro';
 import { entrySlug } from '../../lib/collections';
 import { estimateReadingTime } from '../../lib/readingTime';
@@ -18,7 +19,7 @@ const dateStr = entry.data.date.toLocaleDateString('en-US', {
 });
 ---
 
-<Card href={`/writeups/${entrySlug(entry)}`}>
+<Card href={withBase(`/writeups/${entrySlug(entry)}`)}>
   <article class="writeup-card">
     {entry.data.cover && (
       <img src={entry.data.cover.src} alt={entry.data.coverAlt ?? ''} class="writeup-cover" />

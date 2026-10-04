@@ -1,6 +1,7 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
 import Card from '../ui/Card.astro';
+import { withBase } from '../../lib/urls';
 
 // Curated, non-identifying categories of work. Deliberately static rather
 // than pulled from the projects collection: these are stable category
@@ -13,7 +14,7 @@ const categories = [
     scope: 'Web applications · APIs',
     focus: 'Authentication · Authorization · Session handling · JWT · Common web vulnerabilities',
     work: 'Request/response analysis · Vulnerability validation · Evidence collection · Technical reporting',
-    href: '/projects/redacted-security-assessments',
+    href: withBase('/projects/redacted-security-assessments'),
   },
   {
     eyebrow: '02',
@@ -21,7 +22,7 @@ const categories = [
     scope: 'Externally observable infrastructure and application configuration',
     focus: 'HTTP security headers · TLS/HTTP controls · DNS exposure · Security configuration',
     work: 'Configuration review · Evidence collection · Risk documentation · Remediation recommendations',
-    href: '/work',
+    href: withBase('/work'),
   },
   {
     eyebrow: '03',
@@ -29,14 +30,14 @@ const categories = [
     scope: 'Publicly accessible web assets',
     focus: 'Application and infrastructure analysis · Technical research · Evidence collection',
     work: 'Investigation · Documentation · Technical analysis',
-    href: '/projects/security-investigation',
+    href: withBase('/projects/security-investigation'),
   },
 ] as const;
 ---
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Selected security work" href="/work" linkLabel="View all work" />
+    <SectionHeading title="Selected security work" href={withBase('/work')} linkLabel="View all work" />
     <div class="grid-auto">
       {
         categories.map((c) => (

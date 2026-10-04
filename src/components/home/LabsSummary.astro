@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../ui/SectionHeading.astro';
+import { withBase } from '../../lib/urls';
 import LabCard from '../labs/LabCard.astro';
 import Card from '../ui/Card.astro';
 import { getPublicLabs } from '../../lib/collections';
@@ -9,7 +10,7 @@ const labs = (await getPublicLabs()).slice(0, 3);
 
 <section class="section-tight">
   <div class="page">
-    <SectionHeading title="Training & labs" href="/labs" />
+    <SectionHeading title="Training & labs" href={withBase('/labs')} />
 
     {labs.length > 0 ? (
       <div class="grid-auto">

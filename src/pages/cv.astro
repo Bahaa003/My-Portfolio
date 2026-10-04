@@ -3,6 +3,7 @@ import CvLayout from '../layouts/CvLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Badge from '../components/ui/Badge.astro';
 import { CV } from '../data/cv';
+import { withBase } from '../lib/urls';
 
 const hasDownload = Boolean(CV.pdfPath);
 ---
@@ -12,7 +13,7 @@ const hasDownload = Boolean(CV.pdfPath);
     <p class="mono text-secondary">CV</p>
     <h1>Bahaa Aldeen Nawlo</h1>
     <p class="text-secondary cv-subtitle">Junior Web Penetration Tester · Web Application Security · API Security</p>
-    {hasDownload && <Button href={CV.pdfPath as string} variant="primary">Download PDF</Button>}
+    {hasDownload && <Button href={withBase(CV.pdfPath as string)} variant="primary">Download PDF</Button>}
   </header>
 
   <section>
