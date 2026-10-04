@@ -191,7 +191,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     let binary = '';
     for (const byte of bytes) binary += String.fromCharCode(byte);
     const slug = slugify($('title').value);
-    const data = await request(apiUrl, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upload', collection: state.collection, slug, name: file.name.replace(/[^a-zA-Z0-9_.-]/g, '-'), contentBase64: btoa(binary) }) });
+    const data = await request(`${apiUrl}?action=upload&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upload', collection: state.collection, slug, name: file.name.replace(/[^a-zA-Z0-9_.-]/g, '-'), contentBase64: btoa(binary) }) });
     if (purpose === 'cover') {
       state.coverUrl = data.url;
       $('cover-status').textContent = `Uploaded: ${data.url}`;
@@ -244,7 +244,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const fields = { title: $('title').value.trim(), description: $('description').value.trim(), date: $('date').value, tags: listValue($('tags').value), technologies: listValue($('technologies').value), category: $('category').value, difficulty: $('difficulty').value, coverUrl: state.coverUrl || state.current?.fields?.coverUrl || '' };
       if (!fields.title || !fields.description || !fields.date || !$('content').value.trim()) throw new Error('Title, description, date, and content are required.');
       const name = state.current?.name || `${slugify(fields.title)}.mdx`;
-      await request(apiUrl, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'save', collection: state.collection, name, sha: state.current?.sha, content: frontmatter(fields, $('content').value) }) });
+      await request(`${apiUrl}?action=save&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'save', collection: state.collection, name, sha: state.current?.sha, content: frontmatter(fields, $('content').value) }) });
       setStatus('Published to GitHub. Netlify will deploy automatically.');
       await loadList();
     } catch (error) { setStatus(error.message, true); }
