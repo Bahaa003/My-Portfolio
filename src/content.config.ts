@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 // Shared confidentiality levels. Private content must never be rendered
@@ -90,6 +91,7 @@ const blog = defineCollection({
       confidentiality,
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      coverUrl: z.string().optional(),
     }),
 });
 

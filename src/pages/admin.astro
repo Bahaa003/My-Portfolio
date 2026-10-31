@@ -76,40 +76,83 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  type ArticleFields = {
+    title?: string;
+    description?: string;
+    date?: string;
+    tags?: string[];
+    technologies?: string[];
+    category?: string;
+    difficulty?: string;
+    coverUrl?: string;
+  };
+
+  type ArticleEntry = {
+    name: string;
+    path: string;
+    sha?: string;
+    fields?: ArticleFields;
+  };
+
+  type AdminState = {
+    collection: 'blog' | 'writeups';
+    current: ArticleEntry | null;
+    coverUrl: string;
+  };
+
+  type RequestOptions = RequestInit;
+
   const apiUrl = '/.netlify/functions/admin-api';
   const authUrl = '/.netlify/functions/admin-auth';
-  const state = { collection: 'blog', current: null };
-  const $ = (id) => document.getElementById(id);
+  const state: AdminState = { collection: 'blog', current: null, coverUrl: '' };
+  const $ = <T extends HTMLElement>(id: string): T => {
+    const element = document.getElementById(id);
+    if (!element) throw new Error(`Missing admin element: ${id}`);
+    return element as T;
+  };
 
-  function setStatus(message, error = false) {
-    const element = $('form-status');
+  function errorMessage(error: unknown): string {
+    return error instanceof Error ? error.message : 'Request failed.';
+  }
+
+  function setStatus(message: string, error = false) {
+    const element = $<HTMLParagraphElement>('form-status');
     element.textContent = message;
     element.classList.toggle('is-error', error);
   }
 
-  function slugify(value) {
+  function slugify(value: string) {
     return value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 90) || 'article';
   }
 
-  function listValue(value) {
-    return value.split(',').map((item) => item.trim()).filter(Boolean);
+  function listValue(value: string) {
+    return value.split(',').map((item: string) => item.trim()).filter(Boolean);
   }
 
-  function parseFrontmatter(source) {
+  function parseFrontmatter(source: string): { fields: ArticleFields; body: string } {
     const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
     if (!match) return { fields: {}, body: source };
-    const fields = {};
+    const fields: ArticleFields = {};
     for (const line of match[1].split('\n')) {
       const separator = line.indexOf(':');
       if (separator < 1) continue;
       const key = line.slice(0, separator).trim();
       const raw = line.slice(separator + 1).trim();
-      try { fields[key] = JSON.parse(raw); } catch { fields[key] = raw.replace(/^['"]|['"]$/g, ''); }
+      const value: unknown = (() => {
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return raw.replace(/^['"]|['"]$/g, '');
+        }
+      })();
+      if (key in fields || ['title', 'description', 'date', 'tags', 'technologies', 'category', 'difficulty', 'coverUrl'].includes(key)) {
+        (fields as Record<string, unknown>)[key] = value;
+      }
     }
     return { fields, body: match[2] };
   }
 
-  function frontmatter(fields, body) {
+  function frontmatter(fields: ArticleFields, body: string) {
     const lines = [
       '---',
       `title: ${JSON.stringify(fields.title)}`,
@@ -129,20 +172,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return `${lines.join('\n')}\n---\n\n${body.trim()}\n`;
   }
 
-  async function request(url, options) {
+  async function request<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
     const response = await fetch(url, { credentials: 'same-origin', ...options });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'Request failed.');
-    return data;
+    const data: unknown = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const message = typeof data === 'object' && data !== null && 'error' in data && typeof data.error === 'string'
+        ? data.error
+        : 'Request failed.';
+      throw new Error(message);
+    }
+    return data as T;
   }
 
   async function loadList() {
-    const status = $('article-list-status');
-    const list = $('article-list');
+    const status = $<HTMLParagraphElement>('article-list-status');
+    const list = $<HTMLDivElement>('article-list');
     list.replaceChildren();
     status.textContent = 'Loading...';
     try {
-      const entries = await request(`${apiUrl}?action=list&collection=${state.collection}`);
+      const entries = await request<ArticleEntry[]>(`${apiUrl}?action=list&collection=${state.collection}`);
       status.textContent = entries.length ? `${entries.length} article${entries.length === 1 ? '' : 's'}` : 'No published articles yet.';
       for (const entry of entries) {
         const button = document.createElement('button');
@@ -153,21 +201,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         list.append(button);
       }
     } catch (error) {
-      status.textContent = error.message;
+      status.textContent = errorMessage(error);
     }
   }
 
-  function setEditor(fields = {}, body = '') {
-    $('title').value = fields.title || '';
-    $('description').value = fields.description || '';
-    $('date').value = fields.date || new Date().toISOString().slice(0, 10);
-    $('tags').value = (fields.tags || []).join(', ');
-    $('technologies').value = (fields.technologies || []).join(', ');
-    $('category').value = fields.category || 'web';
-    $('difficulty').value = fields.difficulty || '';
-    $('content').value = body;
+  function setEditor(fields: ArticleFields = {}, body = '') {
+    $<HTMLInputElement>('title').value = fields.title || '';
+    $<HTMLTextAreaElement>('description').value = fields.description || '';
+    $<HTMLInputElement>('date').value = fields.date || new Date().toISOString().slice(0, 10);
+    $<HTMLInputElement>('tags').value = (fields.tags || []).join(', ');
+    $<HTMLInputElement>('technologies').value = (fields.technologies || []).join(', ');
+    $<HTMLSelectElement>('category').value = fields.category || 'web';
+    $<HTMLSelectElement>('difficulty').value = fields.difficulty || '';
+    $<HTMLTextAreaElement>('content').value = body;
     state.coverUrl = fields.coverUrl || '';
-    $('cover-status').textContent = fields.coverUrl ? `Current: ${fields.coverUrl}` : 'Optional';
+    $<HTMLElement>('cover-status').textContent = fields.coverUrl ? `Current: ${fields.coverUrl}` : 'Optional';
     state.current = state.current ? { ...state.current, fields } : null;
     $('editor-mode').textContent = state.current ? `Editing ${state.current.name}` : 'New article';
     $('editor-title').textContent = state.current ? 'Edit article' : 'Create article';
@@ -175,28 +223,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     $('writeup-fields').hidden = state.collection !== 'writeups';
   }
 
-  async function loadArticle(entry) {
+  async function loadArticle(entry: ArticleEntry) {
     try {
-      const data = await request(`${apiUrl}?action=read&collection=${state.collection}&path=${encodeURIComponent(entry.path)}`);
+      const data = await request<{ content: string; sha: string }>(`${apiUrl}?action=read&collection=${state.collection}&path=${encodeURIComponent(entry.path)}`);
       state.current = entry;
       const parsed = parseFrontmatter(data.content);
-      state.current.sha = data.sha;
+      entry.sha = data.sha;
       setEditor(parsed.fields, parsed.body);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) { setStatus(error.message, true); }
+    } catch (error) { setStatus(errorMessage(error), true); }
   }
 
-  async function uploadImage(file, purpose) {
+  async function uploadImage(file: File, purpose: 'cover' | 'body') {
     const bytes = new Uint8Array(await file.arrayBuffer());
     let binary = '';
     for (const byte of bytes) binary += String.fromCharCode(byte);
-    const slug = slugify($('title').value);
-    const data = await request(`${apiUrl}?action=upload&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upload', collection: state.collection, slug, name: file.name.replace(/[^a-zA-Z0-9_.-]/g, '-'), contentBase64: btoa(binary) }) });
+    const slug = slugify($<HTMLInputElement>('title').value);
+    const data = await request<{ url: string }>(`${apiUrl}?action=upload&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upload', collection: state.collection, slug, name: file.name.replace(/[^a-zA-Z0-9_.-]/g, '-'), contentBase64: btoa(binary) }) });
     if (purpose === 'cover') {
       state.coverUrl = data.url;
-      $('cover-status').textContent = `Uploaded: ${data.url}`;
+      $<HTMLElement>('cover-status').textContent = `Uploaded: ${data.url}`;
     } else {
-      const textarea = $('content');
+      const textarea = $<HTMLTextAreaElement>('content');
       const markdown = `![${file.name}](${data.url})`;
       textarea.setRangeText(`\n${markdown}\n`, textarea.selectionStart, textarea.selectionEnd, 'end');
       textarea.focus();
@@ -206,48 +254,54 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   async function init() {
     try {
       await request(`${authUrl}?route=me`);
-      $('admin-login').hidden = true;
-      $('admin-app').hidden = false;
+      $<HTMLElement>('admin-login').hidden = true;
+      $<HTMLElement>('admin-app').hidden = false;
       setEditor();
       await loadList();
     } catch (error) {
-      $('admin-login').hidden = false;
+      $<HTMLElement>('admin-login').hidden = false;
       if (new URLSearchParams(window.location.search).get('login') === 'success') {
         const message = document.createElement('p');
         message.className = 'form-status is-error';
-        message.textContent = `Login completed, but the editor session could not be verified: ${error.message}`;
-        $('admin-login').append(message);
+        message.textContent = `Login completed, but the editor session could not be verified: ${errorMessage(error)}`;
+        $<HTMLElement>('admin-login').append(message);
       }
     }
   }
 
-  $('collection-select').addEventListener('change', async (event) => {
-    state.collection = event.target.value;
+  $<HTMLSelectElement>('collection-select').addEventListener('change', async (event) => {
+    state.collection = (event.target as HTMLSelectElement).value as AdminState['collection'];
     state.current = null;
     setEditor();
     await loadList();
   });
-  $('new-article').addEventListener('click', () => { state.current = null; setEditor(); setStatus(''); });
-  $('logout').addEventListener('click', () => { window.location.href = `${authUrl}?route=logout`; });
-  $('cover-file').addEventListener('change', (event) => event.target.files[0] && uploadImage(event.target.files[0], 'cover').catch((error) => setStatus(error.message, true)));
-  $('article-image').addEventListener('change', (event) => event.target.files[0] && uploadImage(event.target.files[0], 'body').catch((error) => setStatus(error.message, true)));
-  $('delete-article').addEventListener('click', async () => {
-    if (!state.current || !confirm('Delete this article from GitHub?')) return;
+  $<HTMLButtonElement>('new-article').addEventListener('click', () => { state.current = null; setEditor(); setStatus(''); });
+  $<HTMLButtonElement>('logout').addEventListener('click', () => { window.location.href = `${authUrl}?route=logout`; });
+  $<HTMLInputElement>('cover-file').addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) uploadImage(file, 'cover').catch((error) => setStatus(errorMessage(error), true));
+  });
+  $<HTMLInputElement>('article-image').addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) uploadImage(file, 'body').catch((error) => setStatus(errorMessage(error), true));
+  });
+  $<HTMLButtonElement>('delete-article').addEventListener('click', async () => {
+    if (!state.current?.sha || !confirm('Delete this article from GitHub?')) return;
     try {
       await request(`${apiUrl}?action=delete&collection=${state.collection}&path=${encodeURIComponent(state.current.path)}&sha=${encodeURIComponent(state.current.sha)}`, { method: 'POST' });
       state.current = null; setEditor(); setStatus('Deleted. Netlify will deploy the change.'); await loadList();
-    } catch (error) { setStatus(error.message, true); }
+    } catch (error) { setStatus(errorMessage(error), true); }
   });
-  $('article-form').addEventListener('submit', async (event) => {
+  $<HTMLFormElement>('article-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
-      const fields = { title: $('title').value.trim(), description: $('description').value.trim(), date: $('date').value, tags: listValue($('tags').value), technologies: listValue($('technologies').value), category: $('category').value, difficulty: $('difficulty').value, coverUrl: state.coverUrl || state.current?.fields?.coverUrl || '' };
-      if (!fields.title || !fields.description || !fields.date || !$('content').value.trim()) throw new Error('Title, description, date, and content are required.');
+      const fields: ArticleFields = { title: $<HTMLInputElement>('title').value.trim(), description: $<HTMLTextAreaElement>('description').value.trim(), date: $<HTMLInputElement>('date').value, tags: listValue($<HTMLInputElement>('tags').value), technologies: listValue($<HTMLInputElement>('technologies').value), category: $<HTMLSelectElement>('category').value, difficulty: $<HTMLSelectElement>('difficulty').value, coverUrl: state.coverUrl || state.current?.fields?.coverUrl || '' };
+      if (!fields.title || !fields.description || !fields.date || !$<HTMLTextAreaElement>('content').value.trim()) throw new Error('Title, description, date, and content are required.');
       const name = state.current?.name || `${slugify(fields.title)}.mdx`;
-      await request(`${apiUrl}?action=save&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'save', collection: state.collection, name, sha: state.current?.sha, content: frontmatter(fields, $('content').value) }) });
+      await request(`${apiUrl}?action=save&collection=${encodeURIComponent(state.collection)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'save', collection: state.collection, name, sha: state.current?.sha, content: frontmatter(fields, $<HTMLTextAreaElement>('content').value) }) });
       setStatus('Published to GitHub. Netlify will deploy automatically.');
       await loadList();
-    } catch (error) { setStatus(error.message, true); }
+    } catch (error) { setStatus(errorMessage(error), true); }
   });
 
   init();

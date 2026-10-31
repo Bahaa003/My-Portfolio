@@ -2,7 +2,9 @@
 
 This is a fully static site, so security headers are applied by the hosting
 platform/CDN, not by application code. `public/_headers` covers Netlify and
-Cloudflare Pages out of the box.
+Cloudflare Pages out of the box. GitHub Pages does not process `_headers`, so
+the public GitHub Pages deployment cannot receive these custom response
+headers without an additional proxy/CDN.
 
 ## Headers included
 
@@ -33,6 +35,14 @@ Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 Start with a short `max-age` (e.g. a few hours) while testing, then raise it
 once confirmed stable, before considering HSTS preload submission.
 
+## GitHub Pages deployment
+
+The public site is deployed at
+`https://bahaa003.github.io/My-Portfolio/`. GitHub Pages provides HTTPS, but
+does not support this repository's custom `_headers` file. Keep the file for
+the Netlify editor deployment, or put the public site behind a CDN that
+supports response-header rules.
+
 ## If deploying to Vercel instead
 
 Netlify/Cloudflare's `_headers` file format isn't read by Vercel. Port the
@@ -43,4 +53,3 @@ generated once the hosting platform is decided.
 
 Port the same header values into that server's config (e.g. `add_header` in
 nginx). Do this at the point of deployment, since the static host determined
-here is a placeholder.

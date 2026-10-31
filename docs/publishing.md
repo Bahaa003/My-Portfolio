@@ -9,7 +9,7 @@ browser: the server keeps the token in an encrypted, HttpOnly session cookie.
 ### 1. Create a GitHub OAuth App
 
 In GitHub, open **Settings → Developer settings → OAuth Apps → New OAuth App**.
-Use:
+Use the Netlify site that hosts the private editor:
 
 - **Application name:** Bahaa Portfolio Editor
 - **Homepage URL:** `https://funny-salmiakki-7239ae.netlify.app`
