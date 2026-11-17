@@ -7,6 +7,7 @@ import NoteCallout from '../../components/writeups/NoteCallout.astro';
 import WarningCallout from '../../components/writeups/WarningCallout.astro';
 import { getPublicWriteups, entrySlug } from '../../lib/collections';
 import { estimateReadingTime } from '../../lib/readingTime';
+import { withBase } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const writeups = await getPublicWriteups();
@@ -20,6 +21,9 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const { minutes } = estimateReadingTime(entry.body ?? '');
 const allWriteups = await getPublicWriteups();
+const index = allWriteups.findIndex((item) => item.id === entry.id);
+const previousEntry = index < allWriteups.length - 1 ? allWriteups[index + 1] : undefined;
+const nextEntry = index > 0 ? allWriteups[index - 1] : undefined;
 ---
 
 <ArticleLayout
@@ -32,7 +36,14 @@ const allWriteups = await getPublicWriteups();
   readingMinutes={minutes}
   confidentiality={entry.data.confidentiality}
   author={entry.data.author}
+  category={entry.data.category}
+  severity={entry.data.severity}
+  target={entry.data.target}
+  technologies={entry.data.technologies}
+  references={entry.data.references}
   coverUrl={entry.data.coverUrl}
+  previous={previousEntry && { title: previousEntry.data.title, href: withBase(`/writeups/${entrySlug(previousEntry)}`) }}
+  next={nextEntry && { title: nextEntry.data.title, href: withBase(`/writeups/${entrySlug(nextEntry)}`) }}
 >
   <Content components={{ HttpBlock, NoteCallout, WarningCallout }} />
   <RelatedWriteups current={entry} all={allWriteups} />

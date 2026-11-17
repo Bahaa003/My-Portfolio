@@ -10,6 +10,11 @@ interface Heading {
   text: string;
 }
 
+interface ArticleLink {
+  title: string;
+  href: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -22,6 +27,13 @@ interface Props {
   author?: string;
   image?: string;
   coverUrl?: string;
+  category?: string;
+  severity?: string;
+  target?: string;
+  technologies?: string[];
+  references?: string[];
+  previous?: ArticleLink;
+  next?: ArticleLink;
 }
 
 const {
@@ -33,9 +45,16 @@ const {
   headings,
   readingMinutes,
   confidentiality,
-  author,
+  author = 'Bahaa Aldeen Nawlo',
   image,
   coverUrl,
+  category,
+  severity,
+  target,
+  technologies = [],
+  references = [],
+  previous,
+  next,
 } = Astro.props;
 
 const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -46,147 +65,145 @@ const updatedStr = updatedDate?.toLocaleDateString('en-US', {
 });
 ---
 
-<BaseLayout title={title} description={description} type="article" image={image}>
-  <article class="page section">
-    <div class="prose-width article-header">
-      {author && <p class="mono text-secondary article-author">{author}</p>}
+<BaseLayout title={title} description={description} type="article" image={image || coverUrl}>
+  <article class="article-page page section">
+    <header class="article-hero">
+      <div class="article-kicker mono">
+        {category || 'Technical notes'}
+        <span aria-hidden="true">/</span>
+        {readingMinutes} min read
+      </div>
       <h1>{title}</h1>
-      <p class="article-meta mono text-secondary">
-        {dateStr}
-        {updatedStr && ` · Updated ${updatedStr}`}
-        {' · '}{readingMinutes} min read
-      </p>
+      <p class="article-description">{description}</p>
+      <div class="article-byline">
+        <span class="author-mark" aria-hidden="true">BN</span>
+        <span><strong>{author}</strong><br /><span class="text-secondary">{dateStr}{updatedStr && ` · Updated ${updatedStr}`}</span></span>
+      </div>
       {tags.length > 0 && (
-        <div class="article-tags">
+        <div class="article-tags" aria-label="Tags">
           {tags.map((tag) => <Tag>{tag}</Tag>)}
         </div>
       )}
       {coverUrl && <img class="article-cover" src={coverUrl} alt="" />}
+    </header>
+
+    <div class="article-layout">
+      <aside class="article-sidebar">
+        {confidentiality && confidentiality !== 'public' && (
+          <ConfidentialityNotice level={confidentiality} />
+        )}
+        <TableOfContents headings={headings} />
+        {(severity || target || technologies.length > 0) && (
+          <section class="article-facts" aria-label="Write-up details">
+            <p class="facts-title mono">Details</p>
+            {severity && <div><span>Severity</span><strong class={`severity-${severity}`}>{severity}</strong></div>}
+            {target && <div><span>Target</span><strong>{target}</strong></div>}
+            {technologies.length > 0 && <div><span>Tools</span><strong>{technologies.join(', ')}</strong></div>}
+          </section>
+        )}
+      </aside>
+
+      <div class="article-column">
+        <div class="article-body">
+          <slot />
+        </div>
+        {references.length > 0 && (
+          <section class="article-references">
+            <h2>References</h2>
+            <ul>
+              {references.map((reference) => <li><a href={reference} rel="noreferrer">{reference}</a></li>)}
+            </ul>
+          </section>
+        )}
+      </div>
     </div>
 
-    <div class="prose-width">
-      {confidentiality && confidentiality !== 'public' && (
-        <ConfidentialityNotice level={confidentiality} />
-      )}
-      <TableOfContents headings={headings} />
-    </div>
-
-    <div class="prose-width article-body">
-      <slot />
-    </div>
+    {(previous || next) && (
+      <nav class="article-navigation" aria-label="Article navigation">
+        {previous ? <a href={previous.href}><span class="mono text-secondary">Previous</span><strong>← {previous.title}</strong></a> : <span />}
+        {next ? <a class="next-link" href={next.href}><span class="mono text-secondary">Next</span><strong>{next.title} →</strong></a> : <span />}
+      </nav>
+    )}
   </article>
 </BaseLayout>
 
+<script>
+  document.querySelectorAll('.article-body pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-code';
+    button.textContent = 'Copy';
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(code.textContent || '');
+      button.textContent = 'Copied';
+      window.setTimeout(() => { button.textContent = 'Copy'; }, 1400);
+    });
+    pre.append(button);
+  });
+
+  document.querySelectorAll('.article-body img').forEach((image) => {
+    if (!(image instanceof HTMLImageElement) || !image.alt || image.closest('figure')) return;
+    const figure = document.createElement('figure');
+    image.parentNode?.insertBefore(figure, image);
+    figure.append(image);
+    const caption = document.createElement('figcaption');
+    caption.textContent = image.alt;
+    figure.append(caption);
+  });
+</script>
+
 <style>
-  .article-header {
-    margin-bottom: var(--space-4);
-  }
-
-  .article-header h1 {
-    font-size: var(--text-3xl);
-    margin-block: var(--space-1) var(--space-2);
-  }
-
-  .article-author {
-    font-size: var(--text-xs);
-  }
-
-  .article-meta {
-    font-size: var(--text-sm);
-  }
-
-  .article-cover {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    margin-top: var(--space-3);
-  }
-
-  .article-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: var(--space-2);
-  }
-
-  .article-body {
-    font-size: var(--text-base);
-    line-height: var(--leading-relaxed);
-  }
-
-  .article-body :global(h2) {
-    font-size: var(--text-xl);
-    margin-top: var(--space-5);
-    margin-bottom: var(--space-2);
-    scroll-margin-top: 5rem;
-  }
-
-  .article-body :global(h3) {
-    font-size: var(--text-lg);
-    margin-top: var(--space-4);
-    margin-bottom: var(--space-2);
-    scroll-margin-top: 5rem;
-  }
-
-  .article-body :global(p) {
-    margin-block: var(--space-2);
-  }
-
-  .article-body :global(ul),
-  .article-body :global(ol) {
-    margin-block: var(--space-2);
-    padding-left: 1.25rem;
-    list-style: disc;
-  }
-
-  .article-body :global(ol) {
-    list-style: decimal;
-  }
-
-  .article-body :global(li) {
-    margin-block: 0.4rem;
-  }
-
-  .article-body :global(code) {
-    font-family: var(--font-mono);
-    font-size: 0.9em;
-    background: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: 3px;
-    padding: 0.1rem 0.35rem;
-  }
-
-  .article-body :global(pre) {
-    background: var(--color-surface) !important;
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-2);
-    overflow-x: auto;
-    margin-block: var(--space-3);
-  }
-
-  .article-body :global(pre code) {
-    background: none;
-    border: none;
-    padding: 0;
-  }
-
-  .article-body :global(img) {
-    border-radius: var(--radius-md);
-    margin-block: var(--space-3);
-  }
-
-  .article-body :global(a) {
-    color: var(--color-accent-strong);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .article-body :global(blockquote) {
-    border-left: 3px solid var(--color-border-strong);
-    padding-left: var(--space-2);
-    color: var(--color-text-secondary);
-    margin-block: var(--space-3);
-  }
+  .article-page { max-width: 76rem; }
+  .article-hero { max-width: 52rem; margin: 0 auto clamp(2.5rem, 7vw, 5rem); }
+  .article-kicker { display: flex; gap: .65rem; color: var(--color-text-secondary); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; }
+  .article-hero h1 { max-width: 48rem; margin-block: var(--space-2); font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: -.055em; }
+  .article-description { max-width: 42rem; color: var(--color-text-secondary); font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: var(--leading-snug); }
+  .article-byline { display: flex; align-items: center; gap: .7rem; margin-top: var(--space-3); font-size: var(--text-sm); line-height: var(--leading-snug); }
+  .author-mark { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--color-accent-muted); border: 1px solid var(--color-accent-border); font: var(--text-xs) var(--font-mono); }
+  .article-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: var(--space-2); }
+  .article-cover { width: 100%; max-height: 34rem; object-fit: cover; border-radius: var(--radius-md); margin-top: var(--space-4); }
+  .article-layout { display: grid; grid-template-columns: minmax(10rem, 14rem) minmax(0, var(--max-width-content)); gap: clamp(2rem, 6vw, 5rem); justify-content: center; align-items: start; }
+  .article-sidebar { position: sticky; top: 5rem; }
+  .article-column { min-width: 0; }
+  .article-body { font-size: clamp(1.05rem, 1.2vw, 1.15rem); line-height: 1.85; }
+  .article-body :global(h1), .article-body :global(h2), .article-body :global(h3) { scroll-margin-top: 5rem; letter-spacing: -.03em; }
+  .article-body :global(h2) { font-size: var(--text-2xl); margin-top: 3.5rem; margin-bottom: var(--space-2); }
+  .article-body :global(h3) { font-size: var(--text-xl); margin-top: 2.5rem; margin-bottom: var(--space-1); }
+  .article-body :global(p) { margin-block: 1.3rem; }
+  .article-body :global(ul), .article-body :global(ol) { margin-block: 1.3rem; padding-left: 1.5rem; }
+  .article-body :global(ul) { list-style: disc; }
+  .article-body :global(ol) { list-style: decimal; }
+  .article-body :global(li) { margin-block: .45rem; }
+  .article-body :global(code) { font-family: var(--font-mono); font-size: .85em; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; padding: .12rem .35rem; }
+  .article-body :global(pre) { position: relative; margin-block: 2rem; padding: 1.25rem; overflow-x: auto; background: #111317 !important; border: 1px solid var(--color-border); border-radius: var(--radius-md); line-height: 1.6; }
+  .article-body :global(pre code) { display: block; background: none; border: 0; padding: 0; font-size: .82em; }
+  .copy-code { position: absolute; top: .65rem; right: .65rem; padding: .3rem .55rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-text-secondary); background: var(--color-surface); font: var(--text-xs) var(--font-mono); }
+  .copy-code:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+  .article-body :global(figure) { margin: 2rem 0; }
+  .article-body :global(figure img) { margin: 0; }
+  .article-body :global(figcaption) { margin-top: .5rem; color: var(--color-text-secondary); font-size: var(--text-sm); text-align: center; }
+  .article-body :global(a), .article-references a { color: var(--color-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body :global(blockquote) { margin-block: 2rem; padding: .5rem 1.25rem; border-left: 3px solid var(--color-accent-border); color: var(--color-text-secondary); font-size: 1.1em; }
+  .article-body :global(table) { width: 100%; margin-block: 2rem; border-collapse: collapse; font-size: var(--text-sm); }
+  .article-body :global(th), .article-body :global(td) { padding: .7rem; border: 1px solid var(--color-border); text-align: left; }
+  .article-body :global(th) { background: var(--color-surface); }
+  .article-facts { margin-top: var(--space-3); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding-block: var(--space-2); }
+  .facts-title { margin-bottom: var(--space-1); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; }
+  .article-facts div { display: grid; gap: .15rem; margin-top: .75rem; font-size: var(--text-xs); }
+  .article-facts span { color: var(--color-text-secondary); }
+  .article-facts strong { font-weight: 500; overflow-wrap: anywhere; }
+  .severity-critical, .severity-high { color: var(--color-danger); }
+  .severity-medium { color: var(--color-warning); }
+  .article-references { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--color-border); }
+  .article-references h2 { font-size: var(--text-xl); }
+  .article-references li { margin-top: .6rem; overflow-wrap: anywhere; }
+  .article-navigation { max-width: var(--max-width-content); margin: var(--space-6) auto 0; padding-top: var(--space-3); border-top: 1px solid var(--color-border); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .article-navigation a { display: grid; gap: .35rem; padding: var(--space-1); border-radius: var(--radius-md); }
+  .article-navigation a:hover { background: var(--color-accent-muted); }
+  .article-navigation strong { font-weight: 500; }
+  .next-link { text-align: right; }
+  @media (max-width: 760px) { .article-layout { grid-template-columns: 1fr; } .article-sidebar { position: static; order: 2; } .article-column { order: 1; } .article-navigation { margin-top: var(--space-4); } }
+  @media (max-width: 520px) { .article-hero h1 { font-size: 2.5rem; } .article-navigation { grid-template-columns: 1fr; } .next-link { text-align: left; } }
 </style>

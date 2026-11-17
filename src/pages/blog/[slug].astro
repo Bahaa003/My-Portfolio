@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { getPublicBlogPosts, entrySlug } from '../../lib/collections';
 import { estimateReadingTime } from '../../lib/readingTime';
+import { withBase } from '../../lib/urls';
 
 export async function getStaticPaths() {
   const posts = await getPublicBlogPosts();
@@ -15,6 +16,10 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const { minutes } = estimateReadingTime(entry.body ?? '');
+const posts = await getPublicBlogPosts();
+const index = posts.findIndex((post) => post.id === entry.id);
+const previousEntry = index < posts.length - 1 ? posts[index + 1] : undefined;
+const nextEntry = index > 0 ? posts[index - 1] : undefined;
 ---
 
 <ArticleLayout
@@ -26,7 +31,10 @@ const { minutes } = estimateReadingTime(entry.body ?? '');
   headings={headings}
   readingMinutes={minutes}
   confidentiality={entry.data.confidentiality}
+  category={entry.data.category}
   coverUrl={entry.data.coverUrl}
+  previous={previousEntry && { title: previousEntry.data.title, href: withBase(`/blog/${entrySlug(previousEntry)}`) }}
+  next={nextEntry && { title: nextEntry.data.title, href: withBase(`/blog/${entrySlug(nextEntry)}`) }}
 >
   <Content />
 </ArticleLayout>
