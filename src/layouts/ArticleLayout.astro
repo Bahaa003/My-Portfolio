@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/writeups/TableOfContents.astro';
 import ConfidentialityNotice from '../components/ui/ConfidentialityNotice.astro';
 import Tag from '../components/ui/Tag.astro';
+import { withBase } from '../lib/urls';
 
 interface Heading {
   depth: number;
@@ -65,7 +66,7 @@ const updatedStr = updatedDate?.toLocaleDateString('en-US', {
 });
 ---
 
-<BaseLayout title={title} description={description} type="article" image={image || coverUrl}>
+<BaseLayout title={title} description={description} type="article" image={image || (coverUrl ? withBase(coverUrl) : undefined)}>
   <article class="article-page page section">
     <header class="article-hero">
       <div class="article-kicker mono">
@@ -84,7 +85,7 @@ const updatedStr = updatedDate?.toLocaleDateString('en-US', {
           {tags.map((tag) => <Tag>{tag}</Tag>)}
         </div>
       )}
-      {coverUrl && <img class="article-cover" src={coverUrl} alt="" />}
+      {coverUrl && <img class="article-cover" src={withBase(coverUrl)} alt="" />}
     </header>
 
     <div class="article-layout">
