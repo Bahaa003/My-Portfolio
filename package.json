@@ -17,7 +17,21 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@lucide/astro": "^1.49.0",
-    "astro": "^7.3.5"
+    "@tiptap/core": "^3.34.0",
+    "@tiptap/extension-code-block-lowlight": "^3.34.0",
+    "@tiptap/extension-image": "^3.34.0",
+    "@tiptap/extension-link": "^3.34.0",
+    "@tiptap/extension-placeholder": "^3.34.0",
+    "@tiptap/extension-table": "^3.34.0",
+    "@tiptap/extension-table-cell": "^3.34.0",
+    "@tiptap/extension-table-header": "^3.34.0",
+    "@tiptap/extension-table-row": "^3.34.0",
+    "@tiptap/extension-underline": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
+    "astro": "^7.3.5",
+    "lowlight": "^3.3.0",
+    "marked": "^18.2.1",
+    "turndown": "^7.2.5"
   },
   "allowScripts": {
     "esbuild": true
