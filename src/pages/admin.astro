@@ -397,14 +397,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .editor-toolbar button:hover { border-color: var(--color-accent); }
   .editor-toolbar select { width: auto; padding: .35rem; font-size: var(--text-xs); }
   .rich-editor { min-height: 34rem; padding: var(--space-4) .25rem; border: 0; background: transparent; line-height: var(--leading-relaxed); font-size: var(--text-lg); }
-  .rich-editor, .rich-editor:focus-within, .rich-editor:focus, .rich-editor .ProseMirror, .rich-editor .ProseMirror:focus, .rich-editor [contenteditable]:focus { outline: none !important; border: 0 !important; box-shadow: none !important; }
-  .rich-editor p.is-editor-empty:first-child::before { color: var(--color-text-secondary); content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
-  .rich-editor h1, .rich-editor h2, .rich-editor h3 { margin-block: var(--space-3) var(--space-1); }
-  .rich-editor ul, .rich-editor ol { padding-left: 1.5rem; list-style: disc; }
-  .rich-editor ol { list-style: decimal; }
-  .rich-editor blockquote { border-left: 3px solid var(--color-border-strong); padding-left: var(--space-2); color: var(--color-text-secondary); }
-  .rich-editor pre { overflow-x: auto; padding: var(--space-2); background: var(--color-surface); border-radius: var(--radius-sm); }
-  .rich-editor img { max-width: 100%; border-radius: var(--radius-sm); }
+  .rich-editor, .rich-editor:focus-within, .rich-editor:focus { outline: none !important; border: 0 !important; box-shadow: none !important; }
+  .rich-editor :global(.ProseMirror), .rich-editor :global(.ProseMirror:focus), .rich-editor :global(.ProseMirror-focused), .rich-editor :global([contenteditable]:focus) { min-height: 34rem; outline: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  .rich-editor :global(p.is-editor-empty:first-child::before) { color: var(--color-text-secondary); content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
+  .rich-editor :global(h1), .rich-editor :global(h2), .rich-editor :global(h3) { margin-block: var(--space-3) var(--space-1); }
+  .rich-editor :global(ul), .rich-editor :global(ol) { padding-left: 1.5rem; margin-block: var(--space-2); }
+  .rich-editor :global(ul) { list-style: disc; }
+  .rich-editor :global(ol) { list-style: decimal; }
+  .rich-editor :global(li) { margin-block: .35rem; }
+  .rich-editor :global(blockquote) { margin-block: var(--space-3); border-left: 3px solid var(--color-border-strong); padding-left: var(--space-2); color: var(--color-text-secondary); }
+  .rich-editor :global(pre) { overflow-x: auto; padding: var(--space-2); background: var(--color-surface); border-radius: 6px; }
+  .rich-editor :global(img) { max-width: 100%; border-radius: 6px; }
   .cover-preview-wrap { display: grid; gap: .5rem; margin-top: .5rem; }
   .cover-preview-wrap img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
   .remove-cover { justify-self: start; color: var(--color-danger); font-size: var(--text-xs); }
