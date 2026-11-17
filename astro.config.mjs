@@ -6,7 +6,7 @@ import { SITE } from './src/config/site.ts';
 
 export default defineConfig({
   site: SITE.url,
-  base: '/My-Portfolio',
+  base: process.env.NETLIFY ? '' : '/My-Portfolio',
   output: 'static',
   integrations: [mdx(), sitemap()],
   markdown: {
