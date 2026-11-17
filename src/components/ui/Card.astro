@@ -1,13 +1,16 @@
 ---
+import { withBase } from '../../lib/urls';
+
 interface Props {
   href?: string;
 }
 
 const { href } = Astro.props;
 const Element = href ? 'a' : 'div';
+const normalizedHref = href ? withBase(href) : href;
 ---
 
-<Element href={href} class="card">
+<Element href={normalizedHref} class="card">
   <slot />
 </Element>
 

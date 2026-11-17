@@ -70,8 +70,9 @@ deliberately left as a placeholder rather than invented:
 
 ## Security headers
 
-See `docs/security-headers.md`. `public/_headers` covers Netlify/Cloudflare
-Pages; other hosts need the equivalent config ported over at deploy time.
+See `docs/security-headers.md` for the current hosting limitations and the
+headers that should be configured when moving to a host that supports them.
+GitHub Pages does not apply the `public/_headers` file.
 
 ## Portfolio launch checklist
 

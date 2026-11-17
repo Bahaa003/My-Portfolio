@@ -1,72 +1,38 @@
-# Publishing workflow
+# Publishing
 
-The private editor lives at `/admin`. It uses GitHub OAuth for login and the
-GitHub Contents API through Netlify Functions. GitHub tokens never reach the
-browser: the server keeps the token in an encrypted, HttpOnly session cookie.
+The site is a static Astro build deployed to GitHub Pages.
 
-## One-time setup
+## Automatic deployment
 
-### 1. Create a GitHub OAuth App
+Every push to the `master` branch runs
+`.github/workflows/deploy-pages.yml`. The workflow installs dependencies,
+builds the site, and publishes the `dist/` directory to GitHub Pages.
 
-In GitHub, open **Settings → Developer settings → OAuth Apps → New OAuth App**.
-Use the Netlify site that hosts the private editor:
+The production URL is:
 
-- **Application name:** Bahaa Portfolio Editor
-- **Homepage URL:** `https://funny-salmiakki-7239ae.netlify.app`
-- **Authorization callback URL:** `https://funny-salmiakki-7239ae.netlify.app/.netlify/functions/admin-auth?route=callback`
+`https://bahaa003.github.io/My-Portfolio/`
 
-Copy the generated client ID and client secret. Never commit the secret.
+In the repository settings, configure **Pages → Source** as **GitHub Actions**.
 
-### 2. Add Netlify environment variables
+## Publishing content
 
-In **Netlify → Site configuration → Environment variables**, add:
+Add or edit content under `src/content/`, then commit and push the changes.
+The relevant content collections are:
 
-| Variable | Value |
-| --- | --- |
-| `PUBLIC_SITE_URL` | `https://funny-salmiakki-7239ae.netlify.app` |
-| `GITHUB_CLIENT_ID` | GitHub OAuth App client ID |
-| `GITHUB_CLIENT_SECRET` | GitHub OAuth App client secret |
-| `GITHUB_OAUTH_CALLBACK_URL` | The callback URL above |
-| `GITHUB_ADMIN_USERNAME` | `Bahaa003` |
-| `ADMIN_SESSION_SECRET` | A long random secret, at least 32 characters |
-| `GITHUB_REPO_OWNER` | `Bahaa003` |
-| `GITHUB_REPO_NAME` | `My-Portfolio` |
-| `GITHUB_BRANCH` | `master` |
+- `src/content/projects/`
+- `src/content/writeups/`
+- `src/content/labs/`
+- `src/content/blog/`
 
-Set these variables for the production deploy context. Trigger a new deploy
-after saving them.
+Only content with `draft: false` and non-private confidentiality is published.
 
-## Publishing an article
+## Local commands
 
-1. Open `https://funny-salmiakki-7239ae.netlify.app/admin`.
-2. Sign in with the GitHub account `Bahaa003`.
-3. Select **Blog** or **Write-ups**.
-4. Click **New article**, fill in the metadata, and write Markdown/MDX content.
-5. Use the image controls for a cover image or images inside the article.
-6. Click **Publish to GitHub**.
+```bash
+npm install
+npm run dev
+npm run build
+```
 
-The editor creates an `.mdx` file under `src/content/blog/` or
-`src/content/writeups/`. New article filenames are generated from the title.
-The GitHub commit triggers Netlify, and the existing listing and dynamic slug
-routes pick up the new published content automatically.
-
-Only content with `draft: false` and non-private confidentiality is listed.
-The editor currently publishes public content; confidential or private content
-can still be managed manually in the repository when needed.
-
-## GitHub Pages note
-
-The public static site can be deployed to
-`https://bahaa003.github.io/My-Portfolio` using the GitHub Actions workflow.
-The `/admin` editor requires the Netlify Functions described above, so it does
-not work on the GitHub Pages deployment.
-
-## Supported article content
-
-Markdown and MDX support headings, links, lists, tables, fenced syntax-highlighted
-code blocks, images, HTTP request/response blocks, and the existing write-up
-callout components.
-
-The editor API is protected by GitHub OAuth and checks the allowed username on
-the server. It does not use Netlify Git Gateway or expose GitHub credentials to
-client-side JavaScript.
+GitHub Pages is static hosting, so the former Netlify Functions-based admin
+editor is not included. Content is published through GitHub commits.

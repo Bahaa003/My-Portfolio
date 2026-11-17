@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../lib/urls';
+
 interface Props {
   title: string;
   href?: string;
@@ -6,11 +8,12 @@ interface Props {
 }
 
 const { title, href, linkLabel = 'View all' } = Astro.props;
+const normalizedHref = href ? withBase(href) : href;
 ---
 
 <div class="section-heading">
   <h2>{title}</h2>
-  {href && <a href={href} class="section-heading-link">{linkLabel} →</a>}
+  {normalizedHref && <a href={normalizedHref} class="section-heading-link">{linkLabel} →</a>}
 </div>
 
 <style>

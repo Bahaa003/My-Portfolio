@@ -2,7 +2,6 @@ import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { SITE } from '../config/site';
 import { getPublicWriteups, getPublicBlogPosts, entrySlug } from '../lib/collections';
-import { withBase } from '../lib/urls';
 
 export async function GET(context: APIContext) {
   const [writeups, posts] = await Promise.all([getPublicWriteups(), getPublicBlogPosts()]);
@@ -12,14 +11,14 @@ export async function GET(context: APIContext) {
       title: entry.data.title,
       description: entry.data.description,
       pubDate: entry.data.date,
-      link: withBase(`/writeups/${entrySlug(entry)}`),
+      link: new URL(`/My-Portfolio/writeups/${entrySlug(entry)}`, SITE.url).toString(),
       categories: entry.data.tags,
     })),
     ...posts.map((entry) => ({
       title: entry.data.title,
       description: entry.data.description,
       pubDate: entry.data.date,
-      link: withBase(`/blog/${entrySlug(entry)}`),
+      link: new URL(`/My-Portfolio/blog/${entrySlug(entry)}`, SITE.url).toString(),
       categories: entry.data.tags,
     })),
   ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());

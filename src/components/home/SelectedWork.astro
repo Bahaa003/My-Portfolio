@@ -41,7 +41,7 @@ const categories = [
     <div class="grid-auto">
       {
         categories.map((c) => (
-          <Card href={c.href}>
+          <Card href={withBase(c.href)}>
             <article class="work-category">
               <span class="mono text-secondary">{c.eyebrow}</span>
               <h3>{c.title}</h3>

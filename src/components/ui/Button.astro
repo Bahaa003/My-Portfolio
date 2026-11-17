@@ -1,13 +1,16 @@
 ---
+import { withBase } from '../../lib/urls';
+
 interface Props {
   href: string;
   variant?: 'primary' | 'secondary';
 }
 
 const { href, variant = 'primary' } = Astro.props;
+const normalizedHref = withBase(href);
 ---
 
-<a href={href} class:list={['btn', `btn-${variant}`]}>
+<a href={normalizedHref} class:list={['btn', `btn-${variant}`]}>
   <slot />
 </a>
 
